@@ -1,0 +1,49 @@
+.navbar{
+    background-color: var(--green4);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+}
+.navbar ul, .navbar li, .navbar h1, .navbar a {
+    color: var(--green1);
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+.navbar li{
+    cursor: pointer;
+}
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 6rem;
+    align-items: center;
+}
+.navbar a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    
+}
+
+.navbar .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    padding-left: 2rem;
+    padding-right: 4rem;
+    cursor: pointer;
+    
+}
+
+.navbar li:hover {
+    transform: scale(1.1);
+    font-weight: bold;
+}
+.login {
+    margin-left: 30px;
+    padding-right: 2rem;
+    
+}
