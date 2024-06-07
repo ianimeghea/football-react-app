@@ -1,18 +1,44 @@
 import React, { useState } from 'react';
-import './Login.css';  // Ensure you import the CSS file
+import './Login.css';
+import axios from 'axios';
 
 const Login = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [users, setUsers] = useState([]);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (username && password) {
- 
-// Simulating a successful login, you can replace this with actual API call
-      setUser({ username });
-      console.log(`User ${username} logged in`);
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/api/login', {
+          username,
+          password,
+        });
+
+        if (response.status === 200) {
+          setUser({ username });
+          console.log(`User ${username} logged in`);
+          fetchUsers();  // Fetch users after a successful login
+        } else {
+          alert(response.data.message);
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('An error occurred during login');
+      }
     } else {
       alert('Please enter username and password');
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/api/users');
+      if (response.status === 200) {
+        setUsers(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
     }
   };
 
