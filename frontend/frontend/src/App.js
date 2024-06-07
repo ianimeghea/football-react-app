@@ -3,20 +3,25 @@ import { BrowserRouter , Routes, Route } from 'react-router-dom';
 import Navbar from './NavBar';
 import './App.css';
 import './NavBar.css';
-import Favourites from './pages/Favourites'; 
+import Favourites from './Favourites'; 
 import "./Favourites.css"
 import "./Starting11.css"
-import StartingEleven from './pages/Starting11'; 
+import StartingEleven from './Starting11'; 
 import Home from './Home';
-import NotFound from './pages/NotFound';
+import NotFound from './NotFound';
+import "./Home.css";
+import Login from './Login';
+import { useState, useEffect } from 'react';
 
 
 
 function App() {
+  const [user, setUser] = useState(null);
+  
   return (
     <>
     <BrowserRouter>
-        <Navbar />
+        <Navbar user = {user} setUser = {setUser}/>
         <Routes>
           <Route path="/" element={
             
@@ -37,6 +42,14 @@ function App() {
             
             
             } />
+
+          <Route path="/login" element={
+          
+          <Login setUser = {setUser} />
+          
+          
+          } />
+            
 
           <Route path = "*" element={
               
