@@ -5,26 +5,30 @@ import axios from 'axios';
 const Login = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
   const [users, setUsers] = useState([]);
 
-  const handleLogin = async () => {
+  const handleAuth = async () => {
     if (username && password) {
       try {
-        const response = await axios.post('http://127.0.0.1:5000/api/login', {
-          username,
-          password,
-        });
+        const url = isLogin ? 'http://127.0.0.1:5000/api/login' : 'http://127.0.0.1:5000/api/register';
+        const response = await axios.post(url, { username, password });
 
         if (response.status === 200) {
-          setUser({ username });
-          console.log(`User ${username} logged in`);
-          fetchUsers();  // Fetch users after a successful login
+          if (isLogin) {
+            setUser({ username });
+            console.log(`User ${username} logged in`);
+            fetchUsers(); // Fetch users after a successful login
+          } else {
+            alert('User registered successfully');
+            setIsLogin(true); // Switch to login after successful signup
+          }
         } else {
           alert(response.data.message);
         }
       } catch (error) {
-        console.error('Error during login:', error);
-        alert('An error occurred during login');
+        console.error('Error during authentication:', error);
+        alert('An error occurred during authentication');
       }
     } else {
       alert('Please enter username and password');
@@ -45,7 +49,7 @@ const Login = ({ setUser }) => {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h2>Login / Signup</h2>
+        <h2>{isLogin ? 'Login' : 'Signup'}</h2>
         <input
           type="text"
           placeholder="Username"
@@ -58,7 +62,10 @@ const Login = ({ setUser }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleLogin}>Sign Up / Login</button>
+        <button onClick={handleAuth}>{isLogin ? 'Login' : 'Signup'}</button>
+        <p onClick={() => setIsLogin(!isLogin)} className="toggle-auth">
+          {isLogin ? 'Create an account' : 'Already have an account? Login'}
+        </p>
       </div>
     </div>
   );

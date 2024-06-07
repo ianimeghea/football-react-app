@@ -72,8 +72,18 @@ def search_players():
     except Exception as e:
         return jsonify({'error': str(e)})
 
-@app.route('/api/login', methods=['POST'])
-def login():
+@app.route('/api/players', methods=['GET'])
+def get_players():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Players')
+    players = cursor.fetchall()
+    conn.close()
+
+    return jsonify([dict(player) for player in players]), 200
+
+@app.route('/api/register', methods=['POST'])
+def register():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
@@ -88,11 +98,34 @@ def login():
         conn.commit()
         user_id = cursor.lastrowid
         conn.close()
-        return jsonify({"message": "User saved successfully", "user_id": user_id}), 200
+        return jsonify({"message": "User registered successfully", "user_id": user_id}), 200
     except sqlite3.IntegrityError:
         return jsonify({"message": "Username already exists"}), 400
     except Exception as e:
-        return jsonify({"message": "Error saving user", "error": str(e)}), 500
+        return jsonify({"message": "Error registering user", "error": str(e)}), 500
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    
+    if not username or not password:
+        return jsonify({"message": "Username and password are required"}), 400
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Users WHERE username = ? AND password = ?', (username, password))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user:
+            return jsonify({"message": "Login successful", "user_id": user['user_id']}), 200
+        else:
+            return jsonify({"message": "Invalid username or password"}), 400
+    except Exception as e:
+        return jsonify({"message": "Error logging in", "error": str(e)}), 500
 
 @app.route('/api/users', methods=['GET'])
 def get_users():
