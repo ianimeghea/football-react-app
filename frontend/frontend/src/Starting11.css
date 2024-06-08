@@ -1,0 +1,71 @@
+.add-icon:hover {
+    transform: scale(1.2); /* Increase the scale on hover */
+  }
+  .add-icon{
+    margin: 10px;
+  }
+  
+  .starting11-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .lineup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .formation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .forward,
+  .midfield,
+  .defense,
+  .goalkeeper {
+    display: flex;
+    margin: 15px;
+  }
+  
+  .card2 {
+    flex-direction: column;
+    width: 180px;
+    height: 250px;
+    border-radius: 10px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--green3);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 20px;
+  }
+  
+  .middle-midfielder,
+  .middle-attacker {
+    flex-direction: column;
+    width: 180px;
+    height: 250px;
+    border-radius: 10px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--green3);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 15px;
+    margin-top: -20px;
+  }
+  
+  .add-icon:hover {
+    transform: scale(1.2); /* Increase the scale on hover */
+  }
+  

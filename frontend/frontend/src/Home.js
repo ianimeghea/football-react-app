@@ -64,7 +64,7 @@ const Home = ({ setSelectedPlayer,user,favorites,setFavorites }) =>  {
     </div>
     
     <div className = "searchBar"> 
-      <SearchBar user={user} favorites={favorites} setFavorites={setFavorites}/>
+      <SearchBar user={user} favorites={favorites} setFavorites={setFavorites} setSelectedPlayer={setSelectedPlayer}/>
 
     </div>
     </div>
