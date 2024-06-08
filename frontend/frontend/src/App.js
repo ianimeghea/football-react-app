@@ -12,11 +12,13 @@ import NotFound from './NotFound';
 import "./Home.css";
 import Login from './Login';
 import { useState, useEffect } from 'react';
+import PlayerDetails from './playerDetails';
 
 
 
 function App() {
   const [user, setUser] = useState(null);
+  const [selectedPlayer, setSelectedPlayer] = useState(null); // Track selected player
   
   return (
     <>
@@ -25,7 +27,8 @@ function App() {
         <Routes>
           <Route path="/" element={
             
-            <Home />
+            <Home setSelectedPlayer={setSelectedPlayer}
+            />
             
             
             } />
@@ -57,6 +60,13 @@ function App() {
               
               
               } />
+          <Route path="/player/:playerId" element={
+          
+          <PlayerDetails player={selectedPlayer} setSelectedPlayer={setSelectedPlayer}/>
+          
+              } />
+          
+          
         </Routes>
     </BrowserRouter>
     </>

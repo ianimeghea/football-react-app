@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import './searchBar.css';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import SearchIcon from '@mui/icons-material/Search';
 import StarIcon from '@mui/icons-material/Star';
+import { useNavigate } from 'react-router-dom';
 
-const SearchBar = () => {
+
+const SearchBar = ({setSelectedPlayer}) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const navigate = useNavigate();
  
   const handleInputChange = (event) => {
     setQuery(event.target.value);
+  };
+
+  const handleClick = (player) => {
+    setSelectedPlayer(player);
+    console.log('Selected Player Details:', player);
+    navigate(`/player/${player.id}`);
   };
 
   const handleKeyPress = async (event) => {
@@ -38,6 +48,7 @@ const SearchBar = () => {
 
   return (
     <div className="search-bar">
+      <h1 className = "bar-title">Search for your favourite players <SearchIcon style={{ fontSize: 28, verticalAlign: 'middle', marginLeft: '5px' }} /></h1>
       <input
         type="text"
         value={query}
@@ -72,6 +83,9 @@ const SearchBar = () => {
               ) : (
                 <StarBorderIcon onClick={() => toggleFavorite(player)} style={{fontSize:50}}/>
               )}
+              <button className = "more-details" onClick={() => handleClick(player)}>More Details</button>
+            
+              
             </div>
           </li>
         ))}
