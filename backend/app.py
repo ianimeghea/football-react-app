@@ -84,6 +84,9 @@ def get_players():
 
 @app.route('/api/register', methods=['POST'])
 def register():
+    """
+    Saves the user's data when he registers and stores it in the database
+    """
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
@@ -106,6 +109,9 @@ def register():
 
 @app.route('/api/login', methods=['POST'])
 def login():
+    """
+    Checks for the user's username and password in the database
+    """
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
@@ -129,6 +135,9 @@ def login():
 
 @app.route('/api/users/<username>/players', methods=['GET'])
 def get_user_players(username):
+    """
+    Gets the user's players from the database from his username(user_id) which is linked to the tables of his favourite players
+    """
     user_id = get_user_id(username)
     if user_id is None:
         return jsonify({"message": "User not found"}), 404
@@ -148,6 +157,9 @@ def get_user_players(username):
 
 @app.route('/api/users/<username>/favorite_players', methods=['POST'])
 def add_favorite_player(username):
+    """
+    Stores the player, which is taken from the frontend, in the database
+    """
     logging.debug(f"Adding favorite player for username: {username}")
     user_id = get_user_id(username)
     if user_id is None:
@@ -186,6 +198,9 @@ def add_favorite_player(username):
 
 @app.route('/api/users/<username>/favorite_players', methods=['DELETE'])
 def remove_favorite_player(username):
+    """
+    Removes the player, which is taken from the frontend, from the database
+    """
     user_id = get_user_id(username)
     if user_id is None:
         logging.debug(f"User not found for username: {username}")
@@ -202,14 +217,27 @@ def remove_favorite_player(username):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
+        
+        # Remove the player from UserPlayers table
         cursor.execute('DELETE FROM UserPlayers WHERE user_id = ? AND player_id = ?', (user_id, player_id))
         rows_affected = cursor.rowcount
-        conn.commit()
-        conn.close()
-
+        
         if rows_affected == 0:
+            conn.close()
             logging.debug(f"No player found with player_id: {player_id} for user_id: {user_id}")
             return jsonify({"message": "Player not found in favorites"}), 404
+        
+        # Check if the player is still favorited by any other user
+        cursor.execute('SELECT COUNT(*) FROM UserPlayers WHERE player_id = ?', (player_id,))
+        count = cursor.fetchone()[0]
+        
+        if count == 0:
+            # Remove the player from Players table if no other user has favorited this player
+            cursor.execute('DELETE FROM Players WHERE player_id = ?', (player_id,))
+            logging.debug(f"Player {player_id} removed from Players table")
+        
+        conn.commit()
+        conn.close()
 
         logging.debug(f"Player {player_id} removed from favorites for user {user_id}")
         return jsonify({"message": "Player removed from favorites"}), 200
