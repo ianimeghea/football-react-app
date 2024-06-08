@@ -6,7 +6,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import SearchBar from './searchBar.js';
 import './Home.css';
 
-const Home = ({ setSelectedPlayer,user }) =>  {
+const Home = ({ setSelectedPlayer,user,favorites,setFavorites }) =>  {
   
   return (
     <>
@@ -64,7 +64,7 @@ const Home = ({ setSelectedPlayer,user }) =>  {
     </div>
     
     <div className = "searchBar"> 
-      <SearchBar user={user}/>
+      <SearchBar user={user} favorites={favorites} setFavorites={setFavorites}/>
 
     </div>
     </div>

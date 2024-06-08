@@ -19,6 +19,7 @@ import PlayerDetails from './playerDetails';
 function App() {
   const [user, setUser] = useState(null);
   const [selectedPlayer, setSelectedPlayer] = useState(null); // Track selected player
+  const [favorites, setFavorites] = useState([]); // Track favorite players
   
   return (
     <>
@@ -28,13 +29,13 @@ function App() {
           <Route path="/" element={
             
             <Home setSelectedPlayer={setSelectedPlayer}
-            user={user}/>
+            user={user} favorites = {favorites} setFavorites = {setFavorites}/>
             
             
             } />
           <Route path="/favourites" element={
             
-            <Favourites />
+            <Favourites favorites = {favorites}/>
         
             
             } />

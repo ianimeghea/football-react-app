@@ -6,10 +6,10 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
 
-const SearchBar = ({ user ,setSelectedPlayer}) => {
+const SearchBar = ({ user ,setSelectedPlayer,favorites,setFavorites}) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  
   const navigate=useNavigate();
  
   const handleInputChange = (event) => {
