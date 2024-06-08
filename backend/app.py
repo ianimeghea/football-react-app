@@ -2,75 +2,75 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
 import requests
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 CORS(app)
 
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('database.db', timeout=30)
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    # Create Users table
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Users (
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
-    );
-    ''')
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL
+        );
+        ''')
 
-    # Create Players table
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Players (
-        player_id INTEGER PRIMARY KEY,
-        player_number INTEGER NOT NULL,
-        player_position TEXT NOT NULL,
-        name TEXT NOT NULL,
-        nationality TEXT,
-        date_of_birth DATE NOT NULL,
-        country_of_birth TEXT,
-        current_club TEXT NOT NULL,
-        goals INTEGER DEFAULT 0,
-        assists INTEGER DEFAULT 0,
-        age INTEGER GENERATED ALWAYS AS (
-            CAST((strftime('%Y', 'now') - strftime('%Y', date_of_birth)) AS INTEGER) - 
-            (strftime('%m-%d', 'now') < strftime('%m-%d', date_of_birth))
-        ) STORED
-    );
-    ''')
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Players (
+            player_id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            team TEXT NOT NULL,
+            position TEXT NOT NULL
+        );
+        ''')
 
-    # Create UserPlayers table
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS UserPlayers (
-        user_id INTEGER,
-        player_id INTEGER,
-        PRIMARY KEY (user_id, player_id),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-        FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
-    );
-    ''')
-
-    conn.commit()
-    conn.close()
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS UserPlayers (
+            user_id INTEGER,
+            player_id INTEGER,
+            PRIMARY KEY (user_id, player_id),
+            FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
+        );
+        ''')
 
 init_db()
 
+def get_user_id(username):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT user_id FROM Users WHERE username = ?', (username,))
+    user = cursor.fetchone()
+    conn.close()
+    if user:
+        return user['user_id']
+    return None
+
 @app.route('/search', methods=['GET'])
 def search_players():
-    query = request.args.get('q') 
+    query = request.args.get('q')
     url = f"https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p={query}&s=Soccer"
     
     try:
         response = requests.get(url)
         data = response.json()
-        return jsonify(data)
+
+        if 'player' in data and data['player'] is not None:
+            return jsonify(data)
+        return jsonify({'message': 'No players found'}), 404
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/players', methods=['GET'])
 def get_players():
@@ -126,6 +126,85 @@ def login():
             return jsonify({"message": "Invalid username or password"}), 400
     except Exception as e:
         return jsonify({"message": "Error logging in", "error": str(e)}), 500
+
+@app.route('/api/users/<username>/players', methods=['GET'])
+def get_user_players(username):
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT Players.* 
+        FROM Players 
+        JOIN UserPlayers ON Players.player_id = UserPlayers.player_id 
+        WHERE UserPlayers.user_id = ?
+    ''', (user_id,))
+    players = cursor.fetchall()
+    conn.close()
+
+    return jsonify([dict(player) for player in players]), 200
+
+@app.route('/api/users/<username>/favorite_players', methods=['POST'])
+def add_favorite_player(username):
+    logging.debug(f"Adding favorite player for username: {username}")
+    user_id = get_user_id(username)
+    if user_id is None:
+        logging.debug(f"User not found for username: {username}")
+        return jsonify({"message": "User not found"}), 404
+
+    data = request.get_json()
+    logging.debug(f"Received data: {data}")
+    player_id = data.get('player_id')
+    name = data.get('name')
+    team = data.get('team')
+    position = data.get('position')
+
+    if not player_id or not name or not team or not position:
+        return jsonify({"message": "Player ID, name, team, and position are required"}), 400
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT OR IGNORE INTO Players (player_id, name, team, position)
+            VALUES (?, ?, ?, ?)
+        ''', (player_id, name, team, position))
+        
+        cursor.execute('INSERT INTO UserPlayers (user_id, player_id) VALUES (?, ?)', (user_id, player_id))
+        
+        conn.commit()
+        conn.close()
+        logging.debug(f"Player {name} added to favorites for username: {username}")
+        return jsonify({"message": "Player added to favorites"}), 200
+    except sqlite3.IntegrityError:
+        return jsonify({"message": "Player already in favorites"}), 400
+    except Exception as e:
+        logging.error(f"Error adding player to favorites: {e}")
+        return jsonify({"message": "Error adding player to favorites", "error": str(e)}), 500
+
+@app.route('/api/users/<username>/favorite_players', methods=['DELETE'])
+def remove_favorite_player(username):
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+
+    data = request.get_json()
+    player_id = data.get('player_id')
+
+    if not player_id:
+        return jsonify({"message": "Player ID is required"}), 400
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM UserPlayers WHERE user_id = ? AND player_id = ?', (user_id, player_id))
+        conn.commit()
+        conn.close()
+        return jsonify({"message": "Player removed from favorites"}), 200
+    except Exception as e:
+        return jsonify({"message": "Error removing player from favorites", "error": str(e)}), 500
 
 @app.route('/api/users', methods=['GET'])
 def get_users():

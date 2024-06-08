@@ -10,24 +10,14 @@ CREATE TABLE Users (
 -- players start
 CREATE TABLE IF NOT EXISTS Players (
     player_id INTEGER PRIMARY KEY,
-    player_number INTEGER NOT NULL,
-    player_position TEXT NOT NULL,
     name TEXT NOT NULL,
-    nationality TEXT,
-    date_of_birth DATE NOT NULL,
-    country_of_birth TEXT,
-    current_club TEXT NOT NULL,
-    goals INTEGER DEFAULT 0,
-    assists INTEGER DEFAULT 0,
-    age INTEGER GENERATED ALWAYS AS (
-        CAST((strftime('%Y', 'now') - strftime('%Y', date_of_birth)) AS INTEGER) - 
-        (strftime('%m-%d', 'now') < strftime('%m-%d', date_of_birth))
-    ) STORED
+    team TEXT NOT NULL,
+    position TEXT NOT NULL
 );
 
 -- Players end
 
---user players start
+-- user players start
 CREATE TABLE UserPlayers (
     user_id INTEGER,
     player_id INTEGER,
@@ -36,5 +26,4 @@ CREATE TABLE UserPlayers (
     FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
 );
 
---user players end
-
+-- user players end
