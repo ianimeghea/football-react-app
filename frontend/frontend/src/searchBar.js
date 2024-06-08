@@ -10,6 +10,7 @@ const SearchBar = ({ user ,setSelectedPlayer}) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const navigate=useNavigate();
  
   const handleInputChange = (event) => {
     setQuery(event.target.value);

@@ -64,7 +64,7 @@ const Home = ({ setSelectedPlayer,user }) =>  {
     </div>
     
     <div className = "searchBar"> 
-      <SearchBar />
+      <SearchBar user={user}/>
 
     </div>
     </div>

@@ -188,22 +188,33 @@ def add_favorite_player(username):
 def remove_favorite_player(username):
     user_id = get_user_id(username)
     if user_id is None:
+        logging.debug(f"User not found for username: {username}")
         return jsonify({"message": "User not found"}), 404
 
     data = request.get_json()
+    logging.debug(f"Received data for removal: {data}")
     player_id = data.get('player_id')
 
     if not player_id:
+        logging.debug("Player ID is required but not provided")
         return jsonify({"message": "Player ID is required"}), 400
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('DELETE FROM UserPlayers WHERE user_id = ? AND player_id = ?', (user_id, player_id))
+        rows_affected = cursor.rowcount
         conn.commit()
         conn.close()
+
+        if rows_affected == 0:
+            logging.debug(f"No player found with player_id: {player_id} for user_id: {user_id}")
+            return jsonify({"message": "Player not found in favorites"}), 404
+
+        logging.debug(f"Player {player_id} removed from favorites for user {user_id}")
         return jsonify({"message": "Player removed from favorites"}), 200
     except Exception as e:
+        logging.error(f"Error removing player from favorites: {e}")
         return jsonify({"message": "Error removing player from favorites", "error": str(e)}), 500
 
 @app.route('/api/users', methods=['GET'])
