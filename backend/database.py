@@ -26,7 +26,8 @@ def init_db():
             player_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             team TEXT NOT NULL,
-            position TEXT NOT NULL
+            position TEXT NOT NULL,
+            picture TEXT  -- New column for storing picture URL
         );
         ''')
 

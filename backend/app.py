@@ -31,7 +31,8 @@ def init_db():
             player_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             team TEXT NOT NULL,
-            position TEXT NOT NULL
+            position TEXT NOT NULL,
+            picture TEXT  -- New column for storing picture URL
         );
         ''')
 
@@ -172,17 +173,18 @@ def add_favorite_player(username):
     name = data.get('name')
     team = data.get('team')
     position = data.get('position')
+    picture = data.get('picture')  # New picture variable
 
-    if not player_id or not name or not team or not position:
-        return jsonify({"message": "Player ID, name, team, and position are required"}), 400
+    if not player_id or not name or not team or not position or not picture:
+        return jsonify({"message": "Player ID, name, team, position, and picture are required"}), 400
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT OR IGNORE INTO Players (player_id, name, team, position)
-            VALUES (?, ?, ?, ?)
-        ''', (player_id, name, team, position))
+            INSERT OR IGNORE INTO Players (player_id, name, team, position, picture)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (player_id, name, team, position, picture))
         
         cursor.execute('INSERT INTO UserPlayers (user_id, player_id) VALUES (?, ?)', (user_id, player_id))
         

@@ -5,12 +5,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
-
-const SearchBar = ({ user ,setSelectedPlayer,favorites,setFavorites}) => {
+const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   
-  const navigate=useNavigate();
+  const navigate = useNavigate();
  
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -40,7 +39,8 @@ const SearchBar = ({ user ,setSelectedPlayer,favorites,setFavorites}) => {
       player_id: player.idPlayer,
       name: player.strPlayer,
       team: player.strTeam,
-      position: player.strPosition
+      position: player.strPosition,
+      picture: player.strThumb // Include the picture URL
     };
 
     if (favorites.some(fav => fav.player_id === player.idPlayer)) {
@@ -89,7 +89,7 @@ const SearchBar = ({ user ,setSelectedPlayer,favorites,setFavorites}) => {
 
   return (
     <div className="search-bar">
-      <h1 className = "bar-title">Search for your favourite players <SearchIcon style={{ fontSize: 28, verticalAlign: 'middle', marginLeft: '5px' }} /></h1>
+      <h1 className="bar-title">Search for your favourite players <SearchIcon style={{ fontSize: 28, verticalAlign: 'middle', marginLeft: '5px' }} /></h1>
       <input
         type="text"
         value={query}
@@ -124,9 +124,7 @@ const SearchBar = ({ user ,setSelectedPlayer,favorites,setFavorites}) => {
               ) : (
                 <StarBorderIcon onClick={() => toggleFavorite(player)} style={{ fontSize: 50 }} />
               )}
-              <button className = "more-details" onClick={() => handleClick(player)}>More Details</button>
-            
-              
+              <button className="more-details" onClick={() => handleClick(player)}>More Details</button>
             </div>
           </li>
         ))}
