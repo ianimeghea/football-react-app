@@ -1,35 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import './searchBar.css';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import SearchIcon from '@mui/icons-material/Search';
 import StarIcon from '@mui/icons-material/Star';
+import { useNavigate } from 'react-router-dom';
 
-const SearchBar = ({ user }) => {
+
+const SearchBar = ({ user ,setSelectedPlayer}) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    console.log('Username passed to SearchBar:', user);  // Log the username
-    const fetchFavorites = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:5000/api/users/${user.username}/players`);
-        const data = await response.json();
-        if (response.ok) {
-          setFavorites(data);
-        } else {
-          console.error('Error fetching favorite players:', data.message);
-        }
-      } catch (error) {
-        console.error('Error fetching favorite players:', error);
-      }
-    };
-    if (user) {
-      fetchFavorites();
-    }
-  }, [user]);
-
+ 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
+  };
+
+  const handleClick = (player) => {
+    setSelectedPlayer(player);
+    console.log('Selected Player Details:', player);
+    navigate(`/player/${player.id}`);
   };
 
   const handleKeyPress = async (event) => {
@@ -99,6 +88,7 @@ const SearchBar = ({ user }) => {
 
   return (
     <div className="search-bar">
+      <h1 className = "bar-title">Search for your favourite players <SearchIcon style={{ fontSize: 28, verticalAlign: 'middle', marginLeft: '5px' }} /></h1>
       <input
         type="text"
         value={query}
@@ -133,6 +123,9 @@ const SearchBar = ({ user }) => {
               ) : (
                 <StarBorderIcon onClick={() => toggleFavorite(player)} style={{ fontSize: 50 }} />
               )}
+              <button className = "more-details" onClick={() => handleClick(player)}>More Details</button>
+            
+              
             </div>
           </li>
         ))}

@@ -3,8 +3,6 @@
     margin-top: 75px;
     width: 55%;
     margin-left: 20%;
-    
-    
   }
   
   .search-bar input {
@@ -32,8 +30,7 @@
   }
   .result{
     display:flex;
-    justify-content: space-evenly;
-
+    align-items: center;
   }
   
   .search-results {
@@ -46,6 +43,7 @@
     overflow-y: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 150px;
+    width: 103%
   }
   
   .player-item {
@@ -57,10 +55,15 @@
   
   .player-info {
     flex: 1;
+    justify-content: center;
+
   }
   
   .player-actions {
     margin: 30px;
+    align-items: center;
+    justify-content: center;
+
     
   }
   
@@ -73,4 +76,26 @@
   
   .player-actions svg {
     cursor: pointer;
+  }
+  .more-details {
+    background-color: var(--green3); 
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 20px;
+    
+    cursor: pointer;
+    border-radius: 5px;
+    
+  }
+  
+  .more-details:hover {
+    background-color: var(--green4); /* Darker Green */
+  }
+  .bar-title{
+    margin-left: 15%;
   }

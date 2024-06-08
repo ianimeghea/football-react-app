@@ -17,7 +17,7 @@ const Navbar = ({ user, setUser }) => {
         {user ? (
           <>
             <li className="profile">Welcome, {user.username}</li>
-            <li><button onClick={handleLogout}>Logout</button></li>
+            <li className = "logout"><button onClick={handleLogout}>Logout</button></li>
           </>
         ) : (
           <li><Link to="/login" className="login">Login/Register</Link></li>

@@ -23,25 +23,26 @@
     
    
 }
-.card {
+.card1 {
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 16px;
     max-width: 380px;
     margin: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    background-color: var(--green2);
+    background-color: var(--green4);
     
   }
   
   .card-title {
     font-size: 1.5em;
     margin-bottom: 8px;
+    color: white;
   }
   
   .card-text {
     font-size: 1em;
-    color: #555;
+    color: white;
   }
   .icon1{
     color: black;

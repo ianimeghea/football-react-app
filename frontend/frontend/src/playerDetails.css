@@ -1,0 +1,16 @@
+.player-details {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .player-details img {
+    max-width: 70%;
+    height: auto;
+  }
+  
+  .player-details p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  

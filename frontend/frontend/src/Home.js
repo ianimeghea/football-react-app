@@ -6,13 +6,14 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import SearchBar from './searchBar.js';
 import './Home.css';
 
-const Home = ({user}) =>  {
+const Home = ({ setSelectedPlayer,user }) =>  {
+  
   return (
     <>
     <div className = "container">
     <div className = "main">
       <div className = "row">
-        <div className="card">
+        <div className="card1">
           <h2 className="card-title">
           Football: The Beautiful Game
           </h2>
@@ -32,7 +33,7 @@ const Home = ({user}) =>  {
           <StarIcon style={{fontSize : 130}} />
 
         </div>
-        <div className="card">
+        <div className="card1">
           <h2 className="card-title">
           Favourite Your Football Heroes
           </h2>
@@ -44,7 +45,7 @@ const Home = ({user}) =>  {
 
       </div>
       <div className = "row">
-        <div className="card">
+        <div className="card1">
           <h2 className="card-title">
           Create and Share Your Dream Team
           </h2>
@@ -63,7 +64,7 @@ const Home = ({user}) =>  {
     </div>
     
     <div className = "searchBar"> 
-      <SearchBar user={user}/>
+      <SearchBar />
 
     </div>
     </div>
