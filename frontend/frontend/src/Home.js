@@ -12,7 +12,7 @@ const Home = () =>  {
     <div className = "container">
     <div className = "main">
       <div className = "row">
-        <div className="card">
+        <div className="card1">
           <h2 className="card-title">
           Football: The Beautiful Game
           </h2>
@@ -32,7 +32,7 @@ const Home = () =>  {
           <StarIcon style={{fontSize : 130}} />
 
         </div>
-        <div className="card">
+        <div className="card1">
           <h2 className="card-title">
           Favourite Your Football Heroes
           </h2>
@@ -44,7 +44,7 @@ const Home = () =>  {
 
       </div>
       <div className = "row">
-        <div className="card">
+        <div className="card1">
           <h2 className="card-title">
           Create and Share Your Dream Team
           </h2>

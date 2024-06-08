@@ -28,7 +28,7 @@
     color: var(--green4);
   }
   
-  /* Input field styling */
+  
   .login-card input {
     width: 100%;
     padding: 0.8rem;
@@ -38,7 +38,7 @@
     font-size: 1rem;
   }
   
-  /* Button styling */
+  
   .login-card button {
     width: 100%;
     padding: 0.8rem;
@@ -51,19 +51,22 @@
     transition: background 0.3s ease;
   }
   
-  /* Hover effect for button */
+  
   .login-card button:hover {
     background-color: #45A049;
   }
   
-  /* Placeholder styling (optional) */
+  
   .login-card input::placeholder {
     color: #bbb;
   }
   
-  /* Responsive design adjustments */
+  
   @media (max-width: 600px) {
     .login-card {
       padding: 1rem;
     }
+  }
+  .toggle-auth{
+    cursor: pointer;
   }

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   const handleAuth = async () => {
     if (username && password) {
@@ -18,7 +20,8 @@ const Login = ({ setUser }) => {
           if (isLogin) {
             setUser({ username });
             console.log(`User ${username} logged in`);
-            fetchUsers(); // Fetch users after a successful login
+            fetchUsers(); // Fetch users after login
+            navigate('/'); // Redirect to home after login
           } else {
             alert('User registered successfully');
             setIsLogin(true); // Switch to login after successful signup
