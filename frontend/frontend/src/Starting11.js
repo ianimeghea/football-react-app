@@ -1,9 +1,15 @@
 import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Starting11.css';
 
 const Starting11 = () => {
+
+    const navigate = useNavigate();
+
+    const handleAddToFavourites = () => {
+      navigate('/favourites', { state: { from: 'startingeleven' } });
+    };
   return (
     <div className="starting11-container">
       <div className="lineup">
@@ -12,9 +18,9 @@ const Starting11 = () => {
             {[1, 2, 3].map((index) => (
               <div key={index} className={index === 2 ? 'middle-attacker' : 'card2'}>
                 Forward {index}
-                <Link to="/favourites">
-                  <AddIcon className="add-icon" style={{ fontSize: 70, color: 'black' }} />
-                </Link>
+                
+                  <AddIcon onClick={handleAddToFavourites} className="add-icon" style={{ fontSize: 70, color: 'black' }} />
+                
               </div>
             ))}
           </div>
