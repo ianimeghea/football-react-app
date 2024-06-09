@@ -21,6 +21,7 @@ function App() {
   const [selectedPlayer, setSelectedPlayer] = useState(null); // Track selected player
   const [favorites, setFavorites] = useState([]); // Track favorite players
   
+  
   return (
     <>
     <BrowserRouter>
@@ -35,7 +36,7 @@ function App() {
             } />
           <Route path="/favourites" element={
             
-            <Favourites favorites = {favorites}/>
+            <Favourites favorites = {favorites} setFavorites={setFavorites} user={user}/>
         
             
             } />
