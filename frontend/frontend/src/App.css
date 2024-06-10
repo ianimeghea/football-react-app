@@ -11,8 +11,8 @@
 
 /* Body styles */
 body {
-    background-color: var(--green2); /* Set background color using custom variable */
-    color: var(--green4); /* Set text color using custom variable */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
+    background-color: var(--green2); 
+    color: var(--green4); 
+    margin: 0; 
+    padding: 0; 
 }
