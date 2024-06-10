@@ -40,7 +40,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
       name: player.strPlayer,
       team: player.strTeam,
       position: player.strPosition,
-      picture: player.strThumb // Include the picture URL
+      picture: player.strThumb 
     };
 
     if (favorites.some(fav => fav.player_id === player.idPlayer)) {

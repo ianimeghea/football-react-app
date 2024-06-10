@@ -4,20 +4,31 @@ import sqlite3
 import requests
 import logging
 
+# Set up logging configuration
 logging.basicConfig(level=logging.DEBUG)
 
+# Initialize Flask application
 app = Flask(__name__)
 CORS(app)
 
 def get_db_connection():
+    """
+    Establish a connection to the SQLite database.
+    Set the row factory to sqlite3.Row to access columns by name.
+    """
     conn = sqlite3.connect('database.db', timeout=30)
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
+    """
+    Initialize the database by creating tables if they don't exist.
+    Tables: Users, Players, UserPlayers, StartingEleven
+    """
     with get_db_connection() as conn:
         cursor = conn.cursor()
         
+        # Create Users table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS Users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,16 +37,18 @@ def init_db():
         );
         ''')
 
+        # Create Players table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS Players (
             player_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             team TEXT NOT NULL,
             position TEXT NOT NULL,
-            picture TEXT  -- New column for storing picture URL
+            picture TEXT  
         );
         ''')
 
+        # Create UserPlayers table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS UserPlayers (
             user_id INTEGER,
@@ -45,6 +58,8 @@ def init_db():
             FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
         );
         ''')
+
+        # Create StartingEleven table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS StartingEleven (
             user_id INTEGER,
@@ -56,9 +71,13 @@ def init_db():
         );
         ''')
 
+# Initialize the database
 init_db()
 
 def get_user_id(username):
+    """
+    Retrieve the user ID based on the username.
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT user_id FROM Users WHERE username = ?', (username,))
@@ -70,6 +89,9 @@ def get_user_id(username):
 
 @app.route('/search', methods=['GET'])
 def search_players():
+    """
+    Search for players using an external API and return the results.
+    """
     query = request.args.get('q')
     url = f"https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p={query}&s=Soccer"
     
@@ -85,6 +107,9 @@ def search_players():
 
 @app.route('/api/players', methods=['GET'])
 def get_players():
+    """
+    Retrieve all players from the Players table.
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM Players')
@@ -96,7 +121,7 @@ def get_players():
 @app.route('/api/register', methods=['POST'])
 def register():
     """
-    Saves the user's data when he registers and stores it in the database
+    Register a new user and store their information in the database.
     """
     data = request.get_json()
     username = data.get('username')
@@ -121,7 +146,7 @@ def register():
 @app.route('/api/login', methods=['POST'])
 def login():
     """
-    Checks for the user's username and password in the database
+    Log in a user by checking their username and password against the database.
     """
     data = request.get_json()
     username = data.get('username')
@@ -147,7 +172,7 @@ def login():
 @app.route('/api/users/<username>/players', methods=['GET'])
 def get_user_players(username):
     """
-    Gets the user's players from the database from his username(user_id) which is linked to the tables of his favourite players
+    Retrieve the favorite players of a user based on their username.
     """
     user_id = get_user_id(username)
     if user_id is None:
@@ -169,7 +194,7 @@ def get_user_players(username):
 @app.route('/api/users/<username>/favorite_players', methods=['POST'])
 def add_favorite_player(username):
     """
-    Stores the player, which is taken from the frontend, in the database
+    Add a player to the user's list of favorite players.
     """
     logging.debug(f"Adding favorite player for username: {username}")
     user_id = get_user_id(username)
@@ -183,7 +208,7 @@ def add_favorite_player(username):
     name = data.get('name')
     team = data.get('team')
     position = data.get('position')
-    picture = data.get('picture')  # New picture variable
+    picture = data.get('picture') 
 
     if not player_id or not name or not team or not position or not picture:
         return jsonify({"message": "Player ID, name, team, position, and picture are required"}), 400
@@ -211,7 +236,7 @@ def add_favorite_player(username):
 @app.route('/api/users/<username>/favorite_players', methods=['DELETE'])
 def remove_favorite_player(username):
     """
-    Removes the player, which is taken from the frontend, from the database
+    Remove a player from the user's list of favorite players.
     """
     user_id = get_user_id(username)
     if user_id is None:
@@ -259,6 +284,9 @@ def remove_favorite_player(username):
 
 @app.route('/api/users', methods=['GET'])
 def get_users():
+    """
+    Retrieve all users from the Users table.
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM Users')
@@ -266,8 +294,12 @@ def get_users():
     conn.close()
 
     return jsonify([dict(user) for user in users]), 200
+
 @app.route('/api/startingeleven/<username>', methods=['GET'])
 def get_starting_eleven(username):
+    """
+    Retrieve the starting eleven players for a user based on their username.
+    """
     user_id = get_user_id(username)
     if user_id is None:
         return jsonify({"message": "User not found"}), 404
@@ -288,6 +320,9 @@ def get_starting_eleven(username):
 
 @app.route('/api/startingeleven/<username>', methods=['POST'])
 def add_to_starting_eleven(username):
+    """
+    Add a player to the user's starting eleven.
+    """
     user_id = get_user_id(username)
     if user_id is None:
         return jsonify({"message": "User not found"}), 404
@@ -311,8 +346,12 @@ def add_to_starting_eleven(username):
         return jsonify({"message": "Player added to starting eleven", "player_id": player_id, "position": position}), 200
     except Exception as e:
         return jsonify({"message": "Error adding player to starting eleven", "error": str(e)}), 500
+
 @app.route('/api/startingeleven/<username>/<position>', methods=['DELETE'])
 def remove_from_starting_eleven(username, position):
+    """
+    Remove a player from the user's starting eleven.
+    """
     user_id = get_user_id(username)
     if user_id is None:
         return jsonify({"message": "User not found"}), 404
