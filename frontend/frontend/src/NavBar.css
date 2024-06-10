@@ -19,7 +19,7 @@
 .navbar ul {
     list-style: none;
     display: flex;
-    gap: 6rem;
+    gap: 3rem;
     align-items: center;
 }
 .navbar a {
@@ -65,17 +65,26 @@
 }
       
 @media screen and (max-width: 600px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.5rem 0;
+    }
+  
     .navbar ul {
-        flex-direction: row; /* Keep items in a row */
-        justify-content: center; /* Center items horizontally */
-        gap: 1rem; /* Reduced gap between items */
+      width: 100%;
+      align-items: center;
+      gap: 0.2rem;
+      justify-content: flex-start;
+      flex-wrap: wrap; /* Allow items to wrap onto a new line */
     }
-
-    .navbar a {
-        padding: 10px 8px; /* Adjust padding for smaller screens */
-    }
-
+  
     .login {
-        padding: 0 8px; /* Adjust padding for smaller screens */
+      margin-left: 0;
+      
+      order: 2; /* Set the order to appear after other elements */
+      width: 100%; /* Ensure full width for login/register button */
+      text-align: center; /* Center the button */
     }
-}
+  }
+  

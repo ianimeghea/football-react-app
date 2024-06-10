@@ -114,4 +114,38 @@
       margin: 5px 0; /* Adjusted margin for player name on mobile screens */
     }
   }
+  @media screen and (max-width: 414px) {
+    .card2,
+    .middle-midfielder,
+    .middle-attacker {
+      width: 80px; /* Reduced card width for mobile screens */
+      height: 220px; /* Reduced card height for mobile screens */
+      margin:10px;
+    }
+    .middle-midfielder,
+    .middle-attacker{
+        margin-top: -20px;
+    }
+  
+    .display-card {
+      height: 200px; /* Reduced card height for mobile screens */
+    }
+  
+    
+  
+    .delete-button {
+      font-size: 0.3rem; /* Reduced font size for delete button on mobile screens */
+      padding: 3px; /* Reduced padding for delete button on mobile screens */
+    }
+  
+    .player-image {
+      width: 80px; /* Reduced image width for mobile screens */
+      height: 80px; /* Reduced image height for mobile screens */
+    }
+  
+    .player-name {
+      font-size: 0.9rem; /* Reduced font size for player name on mobile screens */
+      margin: 5px 0; /* Adjusted margin for player name on mobile screens */
+    }
+  }
   

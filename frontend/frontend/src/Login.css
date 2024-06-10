@@ -70,3 +70,21 @@
   .toggle-auth{
     cursor: pointer;
   }
+  @media (max-width: 600px) {
+    .login-card {
+        padding: 1.5rem;
+        max-width: 300px; /* Adjust the max-width for smaller screens */
+    }
+
+    .login-card h2 {
+        font-size: 1.5rem; /* Reduce the font size of the heading */
+    }
+
+    .login-card input {
+        font-size: 0.9rem; /* Reduce the font size of the input fields */
+    }
+
+    .login-card button {
+        font-size: 0.9rem; /* Reduce the font size of the button */
+    }
+}
