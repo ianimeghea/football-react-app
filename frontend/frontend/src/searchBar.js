@@ -128,7 +128,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
                 <strong>Name:</strong> {player.strPlayer}
               </div>
               <div>
-                <strong>Team:</strong> {player.strTeam}
+                <strong>Team:</strong> {player.strTeam.replace('_Retired Soccer', "Retired")}
               </div>
               <div>
                 <strong>Position:</strong> {player.strPosition}

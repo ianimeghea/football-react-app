@@ -3,18 +3,9 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const Navbar = ({ user, setUser }) => {
-  /**
- * Component for rendering a logout button.
- * @param {Function} handleLogout - Function to handle the logout action.
- * @returns {JSX.Element} Logout button.
- */
-const LogoutButton = ({ handleLogout }) => {
-  return (
-    <button className="logout-button" onClick={handleLogout}>
-      Logout
-    </button>
-  );
-};
+  const handleLogout = () => {
+    setUser(null);
+  };
   
   return (
     <nav className="navbar">
