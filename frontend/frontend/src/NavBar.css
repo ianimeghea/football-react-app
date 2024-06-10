@@ -64,3 +64,18 @@
     background-color: var(--green3); /* Change to a darker shade on hover */
 }
       
+@media screen and (max-width: 600px) {
+    .navbar ul {
+        flex-direction: row; /* Keep items in a row */
+        justify-content: center; /* Center items horizontally */
+        gap: 1rem; /* Reduced gap between items */
+    }
+
+    .navbar a {
+        padding: 10px 8px; /* Adjust padding for smaller screens */
+    }
+
+    .login {
+        padding: 0 8px; /* Adjust padding for smaller screens */
+    }
+}

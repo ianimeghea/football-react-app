@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './searchBar.css';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import SearchIcon from '@mui/icons-material/Search';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
-const SearchBar = ({ user, setSelectedPlayer, favorites=[], setFavorites }) => {
+const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   

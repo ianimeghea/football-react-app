@@ -1,26 +1,30 @@
 .add-icon:hover {
     transform: scale(1.2); /* Increase the scale on hover */
   }
-  .add-icon{
-    margin: 10px;
+  
+  .add-icon {
+    margin: 5px; /* Reduce margin to fit more cards */
   }
   
   .starting11-container {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap; /* Allow cards to wrap to the next line */
   }
   
   .lineup {
     display: flex;
     flex-direction: column;
     align-items: center;
+    
   }
   
   .formation {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px;
+    margin: 10px; /* Reduce margin for smaller screens */
+    margin-top:60px;
   }
   
   .forward,
@@ -28,44 +32,86 @@
   .defense,
   .goalkeeper {
     display: flex;
-    margin: 15px;
+    margin: 30px; /* Reduce margin to fit more cards */
+    
   }
   
-  .card2 {
-    flex-direction: column;
-    width: 180px;
-    height: 250px;
-    border-radius: 10px;
-    margin: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--green3);
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin: 20px;
-  }
-  
+  .card2,
   .middle-midfielder,
   .middle-attacker {
     flex-direction: column;
-    width: 180px;
-    height: 250px;
+    width: 180px; /* Default card width */
+    height: 300px; /* Default card height */
     border-radius: 10px;
-    margin: 5px;
+    margin: 5px; /* Reduce margin to fit more cards */
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--green3);
     color: white;
-    font-size: 1.1rem;
+    font-size: 1.1rem; /* Default font size */
     font-weight: 500;
-    margin: 15px;
+    margin:60px;
+  }
+  .middle-attacker,.middle-midfielder{
     margin-top: -20px;
   }
   
-  .add-icon:hover {
+  .display-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 300px; /* Default card height */
+    margin:60px;
+  }
+  
+  .delete-button {
+    background-color: var(--green4);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px; /* Default padding */
+    cursor: pointer;
+    
+  }
+  
+  .delete-button:hover {
     transform: scale(1.2); /* Increase the scale on hover */
+  }
+  
+  /* Media query for mobile screens */
+  @media screen and (max-width: 600px) {
+    .card2,
+    .middle-midfielder,
+    .middle-attacker {
+      width: 120px; /* Reduced card width for mobile screens */
+      height: 250px; /* Reduced card height for mobile screens */
+      margin:15px;
+    }
+    .middle-midfielder,
+    .middle-attacker{
+        margin-top: -20px;
+    }
+  
+    .display-card {
+      height: 200px; /* Reduced card height for mobile screens */
+    }
+  
+    
+  
+    .delete-button {
+      font-size: 0.3rem; /* Reduced font size for delete button on mobile screens */
+      padding: 3px; /* Reduced padding for delete button on mobile screens */
+    }
+  
+    .player-image {
+      width: 80px; /* Reduced image width for mobile screens */
+      height: 80px; /* Reduced image height for mobile screens */
+    }
+  
+    .player-name {
+      font-size: 0.9rem; /* Reduced font size for player name on mobile screens */
+      margin: 5px 0; /* Adjusted margin for player name on mobile screens */
+    }
   }
   

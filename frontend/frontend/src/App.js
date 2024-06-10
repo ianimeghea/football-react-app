@@ -11,7 +11,7 @@ import Home from './Home';
 import NotFound from './NotFound';
 import "./Home.css";
 import Login from './Login';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PlayerDetails from './playerDetails';
 
 
@@ -43,7 +43,7 @@ function App() {
         
           <Route path="/startingeleven" element={
             
-            <StartingEleven />
+            <StartingEleven user={user} />
             
             
             } />

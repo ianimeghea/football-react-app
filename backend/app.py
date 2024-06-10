@@ -45,6 +45,16 @@ def init_db():
             FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
         );
         ''')
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS StartingEleven (
+            user_id INTEGER,
+            position TEXT,
+            player_id INTEGER,
+            PRIMARY KEY (user_id, position),
+            FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
+        );
+        ''')
 
 init_db()
 
@@ -256,6 +266,69 @@ def get_users():
     conn.close()
 
     return jsonify([dict(user) for user in users]), 200
+@app.route('/api/startingeleven/<username>', methods=['GET'])
+def get_starting_eleven(username):
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT StartingEleven.position, Players.player_id, Players.name, Players.picture
+        FROM StartingEleven
+        JOIN Players ON StartingEleven.player_id = Players.player_id
+        WHERE StartingEleven.user_id = ?
+    ''', (user_id,))
+    starting_eleven = cursor.fetchall()
+    conn.close()
+
+    result = [{"position": row["position"], "player_id": row["player_id"], "name": row["name"], "picture": row["picture"]} for row in starting_eleven]
+    return jsonify(result), 200
+
+@app.route('/api/startingeleven/<username>', methods=['POST'])
+def add_to_starting_eleven(username):
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+
+    data = request.get_json()
+    position = data.get('position')
+    player_id = data.get('player_id')
+
+    if not position or not player_id:
+        return jsonify({"message": "Position and player ID are required"}), 400
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT OR REPLACE INTO StartingEleven (user_id, position, player_id)
+            VALUES (?, ?, ?)
+        ''', (user_id, position, player_id))
+        conn.commit()
+        conn.close()
+        return jsonify({"message": "Player added to starting eleven", "player_id": player_id, "position": position}), 200
+    except Exception as e:
+        return jsonify({"message": "Error adding player to starting eleven", "error": str(e)}), 500
+@app.route('/api/startingeleven/<username>/<position>', methods=['DELETE'])
+def remove_from_starting_eleven(username, position):
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            DELETE FROM StartingEleven 
+            WHERE user_id = ? AND position = ?
+        ''', (user_id, position))
+        conn.commit()
+        conn.close()
+        return jsonify({"message": "Player removed from starting eleven"}), 200
+    except Exception as e:
+        return jsonify({"message": "Error removing player from starting eleven", "error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)

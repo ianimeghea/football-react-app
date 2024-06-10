@@ -1,12 +1,11 @@
 import React from 'react';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import GroupsIcon from '@mui/icons-material/Groups';
 import SearchBar from './searchBar.js';
 import './Home.css';
 
-const Home = ({ setSelectedPlayer,user,favorites,setFavorites }) =>  {
+const Home = ({ setSelectedPlayer,user, favorites, setFavorites }) =>  {
   
   return (
     <>

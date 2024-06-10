@@ -1,4 +1,3 @@
-// api.js
 
 export const getUserFavorites = async (username) => {
     try {
