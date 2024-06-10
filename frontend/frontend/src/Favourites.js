@@ -3,9 +3,9 @@ import './Favourites.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getUserFavorites, removeFromFavorites } from './api';
 
-const Favourites = ({ user, setSelectedPlayer }) => {
+const Favourites = ({ user, setSelectedPlayer, startingEleven}) => {
   const [favorites, setFavorites] = useState([]);
-  const [loading, setLoading] = useState(true);
+  
   const location = useLocation();
   const navigate = useNavigate();
   const fromStarting11 = location.state?.from === 'startingeleven';
@@ -23,7 +23,7 @@ const Favourites = ({ user, setSelectedPlayer }) => {
       getUserFavorites(user.username)
         .then((data) => {
           setFavorites(data);
-          setLoading(false);
+         
         })
         .catch((error) => console.error('Error fetching user favorites:', error));
     }
@@ -32,23 +32,37 @@ const Favourites = ({ user, setSelectedPlayer }) => {
   // Function to add player to starting eleven
   const handleAddToTeam = (player_id) => {
     if (fromStarting11 && position) {
-      fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ position, player_id })
-      })
+      // First, fetch the current starting eleven to check if the player is already on the team
+      fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}`)
         .then(response => response.json())
-        .then(data => {
-          if (data.message === 'Player added to starting eleven') {
-            navigate('/startingeleven');
-            console.log(data);
+        .then(startingEleven => {
+          // Check if the player is already in the starting eleven
+          const playerExists = startingEleven.some(player => player.player_id === player_id);
+          
+          if (playerExists) {
+            alert('Player already in team');
           } else {
-            console.error('Error adding player to starting eleven:', data);
+            // If the player is not in the list, proceed to add them
+            fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ position, player_id })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.message === 'Player added to starting eleven') {
+                navigate('/startingeleven');
+                console.log(data);
+              } else {
+                console.error('Error adding player to starting eleven:', data);
+              }
+            })
+            .catch(error => console.error('Error adding player to starting eleven:', error));
           }
         })
-        .catch(error => console.error('Error adding player to starting eleven:', error));
+        .catch(error => console.error('Error fetching starting eleven:', error));
     }
   };
 
@@ -61,10 +75,8 @@ const Favourites = ({ user, setSelectedPlayer }) => {
       .catch(error => console.error('Error removing player from favorites:', error));
   };
 
-  // Render loading message if data is loading
-  if (loading) {
-    return <p className="empty-message">Loading...</p>;
-  }
+  
+  
 
   // Render empty message if no user is logged in
   if (!user) {

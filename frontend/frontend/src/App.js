@@ -22,6 +22,7 @@ function App() {
   const [user, setUser] = useState(null); // State to manage user authentication
   const [selectedPlayer, setSelectedPlayer] = useState(null); // State to track selected player
   const [favorites, setFavorites] = useState([]); // State to track favorite players
+  const [startingEleven, setStartingEleven] = useState({});
   
   return (
     <>
@@ -36,12 +37,12 @@ function App() {
           
           {/* Route for the favorites page */}
           <Route path="/favourites" element={
-            <Favourites favorites = {favorites} setFavorites={setFavorites} user={user} setSelectedPlayer={setSelectedPlayer}/>
+            <Favourites favorites = {favorites} setFavorites={setFavorites} user={user} setSelectedPlayer={setSelectedPlayer} startingEleven={startingEleven}/>
             } />
         
           {/* Route for the starting eleven page */}
           <Route path="/startingeleven" element={
-            <StartingEleven user={user} />
+            <StartingEleven user={user} setStartingEleven={setStartingEleven}/>
             } />
 
           {/* Route for the login page */}

@@ -27,6 +27,7 @@ const PlayerDetails = ({ player }) => {
       {player.picture && <img src={player.picture} alt={player.name} />}
       <p><strong>Team:</strong> {player.team !== "0" ? player.team : 'Information not available'}</p>
       <p><strong>Position:</strong> {player.position !== "0" ? player.position : 'Information not available'}</p>
+      
     </div>
   </div>) :
     (<div className="player-details">

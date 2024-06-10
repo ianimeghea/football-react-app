@@ -81,7 +81,6 @@
   
     .login {
       margin-left: 0;
-      
       order: 2; /* Set the order to appear after other elements */
       width: 100%; /* Ensure full width for login/register button */
       text-align: center; /* Center the button */
