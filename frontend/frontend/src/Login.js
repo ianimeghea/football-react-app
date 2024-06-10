@@ -3,6 +3,11 @@ import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Component for user login and registration.
+ * @param {Object} setUser - Function to set the logged-in user.
+ * @returns {JSX.Element} Login form.
+ */
 const Login = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -10,6 +15,11 @@ const Login = ({ setUser }) => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
+  /**
+   * Function to handle user authentication (login or signup).
+   * Redirects to home page after successful login.
+   * @returns {void}
+   */
   const handleAuth = async () => {
     if (username && password) {
       try {
@@ -38,6 +48,10 @@ const Login = ({ setUser }) => {
     }
   };
 
+  /**
+   * Function to fetch users from the API.
+   * @returns {void}
+   */
   const fetchUsers = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:5000/api/users');

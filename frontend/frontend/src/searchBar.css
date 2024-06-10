@@ -94,7 +94,8 @@
   }
   
   .more-details:hover {
-    background-color: var(--green4); /* Darker Green */
+    background-color: black; 
+    transform: scale(1.1);
   }
   .bar-title{
     margin-left: 15%;

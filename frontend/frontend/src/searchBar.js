@@ -5,22 +5,32 @@ import SearchIcon from '@mui/icons-material/Search';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Component for rendering a search bar.
+ * @param {Object} props - The component props.
+ * @param {Object} props.user - The current user data.
+ * @param {Function} props.setSelectedPlayer - Function to set the selected player.
+ * @param {Array} props.favorites - Array of favorite players.
+ * @param {Function} props.setFavorites - Function to set the favorite players.
+ * @returns {JSX.Element} Search bar component.
+ */
 const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  
   const navigate = useNavigate();
  
+  /**
+   * Handles the input change in the search bar.
+   * @param {Object} event - The input change event.
+   */
   const handleInputChange = (event) => {
     setQuery(event.target.value);
   };
 
-  const handleClick = (player) => {
-    setSelectedPlayer(player);
-    console.log('Selected Player Details:', player);
-    navigate(`/player/${player.id}`);
-  };
-
+  /**
+   * Handles key press events in the search bar.
+   * @param {Object} event - The key press event.
+   */
   const handleKeyPress = async (event) => {
     if (event.key === 'Enter') {
       try {
@@ -34,13 +44,17 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
     }
   };
 
+  /**
+   * Toggles a player's favorite status.
+   * @param {Object} player - The player object.
+   */
   const toggleFavorite = async (player) => {
     const playerData = {
       player_id: player.idPlayer,
       name: player.strPlayer,
       team: player.strTeam,
       position: player.strPosition,
-      picture: player.strThumb // Include the picture URL
+      picture: player.strThumb
     };
 
     if (favorites.some(fav => fav.player_id === player.idPlayer)) {
@@ -63,8 +77,8 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
         console.error('Error during removing favorite:', error);
       }
     } else {
-      console.log('Adding player to favorites:', playerData);  // Log the player data
-      console.log('Username used in request:', user);  // Log the username used in request
+      console.log('Adding player to favorites:', playerData);
+      console.log('Username used in request:', user);
       setFavorites(prevFavorites => [...prevFavorites, playerData]);
       try {
         const response = await fetch(`http://127.0.0.1:5000/api/users/${user.username}/favorite_players`, {
@@ -85,6 +99,15 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
         console.error('Error during adding favorite:', error);
       }
     }
+  };
+
+  /**
+   * Handles the click event for viewing more details of a player.
+   * @param {Object} player - The player object.
+   */
+  const handleMoreDetails = (player) => {
+    setSelectedPlayer(player);
+    navigate(`/player/${player.strPlayer}`);
   };
 
   return (
@@ -124,7 +147,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
               ) : (
                 <StarBorderIcon onClick={() => toggleFavorite(player)} style={{ fontSize: 50 }} />
               )}
-              <button className="more-details" onClick={() => handleClick(player)}>More Details</button>
+              <button className="more-details" onClick={() => handleMoreDetails(player)}>More Details</button>
             </div>
           </li>
         ))}

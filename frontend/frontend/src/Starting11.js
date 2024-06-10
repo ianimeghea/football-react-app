@@ -4,10 +4,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 import './Starting11.css';
 
+
 const Starting11 = ({ user }) => {
   const [startingEleven, setStartingEleven] = useState({});
   const navigate = useNavigate();
-
+/**
+   * Fetches the user's starting eleven from the server.
+   */
   useEffect(() => {
     if (user) {
       console.log('Fetching starting eleven for user:', user.username);
@@ -29,10 +32,18 @@ const Starting11 = ({ user }) => {
     }
   }, [user]);
 
+  /**
+   * Navigates to the favorites page to add a player to favorites.
+   * @param {string} position - The position of the player.
+   */
   const handleAddToFavourites = (position) => {
     navigate('/favourites', { state: { from: 'startingeleven', position } });
   };
-
+  
+ /**
+   * Removes a player from the starting eleven.
+   * @param {string} position - The position of the player to remove.
+   */
   const handleRemovePlayer = (position) => {
     fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}/${position}`, {
       method: 'DELETE'
