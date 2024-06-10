@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const Navbar = ({ user, setUser }) => {
+  // Function to handle user logout
   const handleLogout = () => {
     setUser(null);
   };
