@@ -21,10 +21,6 @@ def get_db_connection():
     return conn
 
 def init_db():
-    """
-    Initialize the database by creating tables if they don't exist.
-    Tables: Users, Players, UserPlayers, StartingEleven, Squads
-    """
     with get_db_connection() as conn:
         cursor = conn.cursor()
         
@@ -44,7 +40,13 @@ def init_db():
             name TEXT NOT NULL,
             team TEXT NOT NULL,
             position TEXT NOT NULL,
-            picture TEXT  
+            picture TEXT,
+            shirt_number INTEGER,
+            nationality TEXT,
+            birth_date TEXT,
+            height TEXT,
+            weight TEXT,
+            description TEXT
         );
         ''')
 
@@ -118,9 +120,6 @@ def search_players():
 
 @app.route('/api/players', methods=['GET'])
 def get_players():
-    """
-    Retrieve all players from the Players table.
-    """
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM Players')
@@ -128,6 +127,7 @@ def get_players():
     conn.close()
 
     return jsonify([dict(player) for player in players]), 200
+
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -204,9 +204,6 @@ def get_user_players(username):
 
 @app.route('/api/users/<username>/favorite_players', methods=['POST'])
 def add_favorite_player(username):
-    """
-    Add a player to the user's list of favorite players.
-    """
     logging.debug(f"Adding favorite player for username: {username}")
     user_id = get_user_id(username)
     if user_id is None:
@@ -219,7 +216,13 @@ def add_favorite_player(username):
     name = data.get('name')
     team = data.get('team')
     position = data.get('position')
-    picture = data.get('picture') 
+    picture = data.get('picture')
+    shirt_number = data.get('shirt_number')
+    nationality = data.get('nationality')
+    birth_date = data.get('birth_date')
+    height = data.get('height')
+    weight = data.get('weight')
+    description = data.get('description')
 
     if not player_id or not name or not team or not position or not picture:
         return jsonify({"message": "Player ID, name, team, position, and picture are required"}), 400
@@ -228,9 +231,9 @@ def add_favorite_player(username):
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT OR IGNORE INTO Players (player_id, name, team, position, picture)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (player_id, name, team, position, picture))
+            INSERT OR IGNORE INTO Players (player_id, name, team, position, picture, shirt_number, nationality, birth_date, height, weight, description)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (player_id, name, team, position, picture, shirt_number, nationality, birth_date, height, weight, description))
         
         cursor.execute('INSERT INTO UserPlayers (user_id, player_id) VALUES (?, ?)', (user_id, player_id))
         

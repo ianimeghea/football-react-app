@@ -58,9 +58,14 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
       team: player.strTeam,
       position: player.strPosition,
       picture: player.strCutout,
-      
+      shirt_number: player.intShirtNumber, 
+      nationality: player.strNationality,
+      birth_date: player.dateBorn, 
+      height: player.strHeight,
+      weight: player.strWeight,
+      description: player.strDescriptionEN 
     };
-
+    
     if (favorites.some(fav => fav.player_id === player.idPlayer)) {
       setFavorites(prevFavorites => prevFavorites.filter(fav => fav.player_id !== player.idPlayer));
       try {
