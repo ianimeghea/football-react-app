@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './LatestNews.css'; // Import CSS file for styling
 
-const LatestNews = ({user}) => {
+const LatestNews = ({ user }) => {
   const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNewsFromBackend = async () => {
@@ -13,8 +14,10 @@ const LatestNews = ({user}) => {
         }
         const data = await response.json();
         setNews(data);
+        setLoading(false); // Set loading to false once news is fetched
       } catch (error) {
         console.error('Error fetching news:', error);
+        setLoading(false); // Set loading to false in case of error
       }
     };
 
@@ -25,28 +28,29 @@ const LatestNews = ({user}) => {
   const newsToShow = news.slice(0, 6);
 
   return (
-    <>
     <div className="latest-news-container">
-    <h2 className = "lineup-title">Latest News</h2>
-    <h3 className = "lineup-title"> {user ? `Handpicked for ${user.username}` : ''} </h3>
-    <div className="news-grid">
-      {newsToShow.map((article, index) => (
-        <div key={index} className="news-card">
-          <img src={article.img} alt={article.title} />
-          <div className="news-content">
-            <h3>{article.title}</h3>
-            <p>{article.description}</p>
-            <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+      <h2 className="lineup-title">Latest News</h2>
+      <h3 className="lineup-title">{user ? `Handpicked for ${user.username}` : ''}</h3>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <div className="news-grid">
+            {newsToShow.map((article, index) => (
+              <div key={index} className="news-card">
+                <img src={article.img} alt={article.title} />
+                <div className="news-content">
+                  <h3>{article.title}</h3>
+                  <p>{article.description}</p>
+                  <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      ))}
+          <div className="news-footer">News from espn.com</div>
+        </>
+      )}
     </div>
-    <div className = "news-footer">News from espn.com</div>
-  </div>
-  
-  
-  </>
-    
   );
 };
 

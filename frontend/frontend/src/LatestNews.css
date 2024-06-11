@@ -70,3 +70,10 @@
     margin-top: 50px;
     height: 100px;
   }
+
+  .latest-news-container.loading-text{
+    margin-left:auto;
+    margin-right:auto;
+    font-size: 10rem;
+
+}
