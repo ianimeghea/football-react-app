@@ -14,7 +14,12 @@ const Login = ({ setUser }) => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-
+  const handleKeyPress = async (event) => {
+    if (event.key === 'Enter') {
+      handleAuth();
+      
+    }
+  };
   /**
    * Function to handle user authentication (login or signup).
    * Redirects to home page after successful login.
@@ -78,6 +83,7 @@ const Login = ({ setUser }) => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleKeyPress}
         />
         <button onClick={handleAuth}>{isLogin ? 'Login' : 'Signup'}</button>
         <p onClick={() => setIsLogin(!isLogin)} className="toggle-auth">
