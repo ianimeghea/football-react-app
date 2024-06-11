@@ -63,6 +63,15 @@
     font-size: 1.1rem; /* Default font size */
     font-weight: 500;
     margin:60px;
+    box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.9);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+  
+  .card2:hover,
+  .middle-midfielder:hover,
+  .middle-attacker:hover {
+    transform: scale(1.1) rotate(5deg);
+  box-shadow: 20px 20px 15px rgba(0, 0, 0, 0.9);
   }
   .middle-attacker,.middle-midfielder{
     margin-top: -20px;

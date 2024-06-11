@@ -83,7 +83,7 @@ const Starting11 = ({ user }) => {
     <div className="starting11-container">
      
       <div className="lineup">
-        <h1 className = "lineup-title">{user.username}'s Team</h1>
+        <h1 className = "lineup-title">{user ? `${user.username}'s team` : 'Please log in'}</h1>
         <div className="formation">
           <div className="forward">
             {['forward1', 'forward2', 'forward3'].map((position) => (
