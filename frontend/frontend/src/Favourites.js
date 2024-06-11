@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './Favourites.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getUserFavorites, removeFromFavorites } from './api';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const Favourites = ({ user, setSelectedPlayer, startingEleven}) => {
+const Favourites = ({ user, setSelectedPlayer, startingEleven }) => {
   const [favorites, setFavorites] = useState([]);
   
   const location = useLocation();
@@ -23,7 +25,6 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven}) => {
       getUserFavorites(user.username)
         .then((data) => {
           setFavorites(data);
-         
         })
         .catch((error) => console.error('Error fetching user favorites:', error));
     }
@@ -75,9 +76,6 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven}) => {
       .catch(error => console.error('Error removing player from favorites:', error));
   };
 
-  
-  
-
   // Render empty message if no user is logged in
   if (!user) {
     return <p className="empty-message">Please log in to view favorites.</p>;
@@ -95,13 +93,17 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven}) => {
       <div className="favourites-container">
         {hasFavorites && favorites.map((player) => (
           <div key={player.player_id} className="card">
+            {/* Material-UI delete icon for removing from favorites */}
+            <IconButton>
+              <DeleteIcon className="remove-from-favorites"
+              onClick={() => handleRemoveFromFavorites(player.player_id)} />
+            </IconButton>
             <div className="card-content">
               <h3>{player.name}</h3>
+              <p><strong>{player.shirt_number}</strong></p>
               <p><strong>Team:</strong> {player.team.replace('_Retired Soccer', "Retired")}</p>
               <p><strong>Position:</strong> {player.position}</p>
               <img className="player-image" src={player.picture} alt={player.name} width="130" />
-              {/* Button to remove player from favorites */}
-              <button className="remove-from-favorites" onClick={() => handleRemoveFromFavorites(player.player_id)}>Remove from favorites</button>
               {/* Button to add player to starting eleven */}
               {fromStarting11 && <button className="add-to-team" onClick={() => handleAddToTeam(player.player_id)}>Add to team</button>}
               {/* Button to view more details */}

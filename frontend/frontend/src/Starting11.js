@@ -83,6 +83,7 @@ const Starting11 = ({ user }) => {
     <div className="starting11-container">
      
       <div className="lineup">
+        <h1 className = "lineup-title">{user.username}'s Team</h1>
         <div className="formation">
           <div className="forward">
             {['forward1', 'forward2', 'forward3'].map((position) => (
@@ -90,13 +91,13 @@ const Starting11 = ({ user }) => {
                 {startingEleven[position] ? (
                   <div className="display-card">
                     <img className="player-image" src={startingEleven[position].picture} alt={startingEleven[position].name} width="100" />
-                    <p className="player-name">{startingEleven[position].name}</p>
+                    <p className="player-name1">{startingEleven[position].name}</p>
                     <p><strong>{positionAbbreviations[position]}</strong></p>
                     <button className = "delete-button" onClick={() => handleRemovePlayer(position)}><DeleteIcon /></button>
                   </div>
                 ) : (
                   <>
-                    {positionAbbreviations[position]}
+                    <div className="position">{positionAbbreviations[position]}</div>
                     <AddIcon onClick={() => handleAddToFavourites(position)} className="add-icon" style={{ fontSize: 70, color: 'black' }} />
                   </>
                 )}
@@ -109,13 +110,13 @@ const Starting11 = ({ user }) => {
                 {startingEleven[position] ? (
                   <div className="display-card">
                     <img className="player-image" src={startingEleven[position].picture} alt={startingEleven[position].name} width="100" />
-                    <p className="player-name">{startingEleven[position].name}</p>
+                    <p className="player-name1">{startingEleven[position].name}</p>
                     <p><strong>{positionAbbreviations[position]}</strong></p>
                     <button className = "delete-button" onClick={() => handleRemovePlayer(position)}><DeleteIcon /></button>
                   </div>
                 ) : (
                   <>
-                    {positionAbbreviations[position]}
+                    <div className="position">{positionAbbreviations[position]}</div>
                     <AddIcon onClick={() => handleAddToFavourites(position)} className="add-icon" style={{ fontSize: 70, color: 'black' }} />
                   </>
                 )}
@@ -128,13 +129,13 @@ const Starting11 = ({ user }) => {
                 {startingEleven[position] ? (
                   <div className="display-card">
                     <img className="player-image" src={startingEleven[position].picture} alt={startingEleven[position].name} width="100" />
-                    <p className="player-name">{startingEleven[position].name}</p>
+                    <p className="player-name1">{startingEleven[position].name}</p>
                     <p><strong>{positionAbbreviations[position]}</strong></p>
                     <button className = "delete-button" onClick={() => handleRemovePlayer(position)}><DeleteIcon /></button>
                   </div>
                 ) : (
                   <>
-                    {positionAbbreviations[position]}
+                    <div className="position">{positionAbbreviations[position]}</div>
                     <AddIcon onClick={() => handleAddToFavourites(position)} className="add-icon" style={{ fontSize: 70, color: 'black' }} />
                   </>
                 )}
@@ -146,13 +147,13 @@ const Starting11 = ({ user }) => {
               {startingEleven['goalkeeper'] ? (
                 <div className="display-card">
                   <img className="player-image" src={startingEleven['goalkeeper'].picture} alt={startingEleven['goalkeeper'].name} width="100" />
-                  <p className="player-name">{startingEleven['goalkeeper'].name}</p>
+                  <p className="player-name1">{startingEleven['goalkeeper'].name}</p>
                   <p><strong>{positionAbbreviations["goalkeeper"]}</strong></p>
                   <button className = "delete-button" onClick={() => handleRemovePlayer('goalkeeper')}><DeleteIcon /></button>
                 </div>
               ) : (
                 <>
-                  {positionAbbreviations['goalkeeper']}
+                  <div className="position">{positionAbbreviations["goalkeeper"]}</div>
                   <AddIcon onClick={() => handleAddToFavourites('goalkeeper')} className="add-icon" style={{ fontSize: 70, color: 'black' }} />
                 </>
               )}

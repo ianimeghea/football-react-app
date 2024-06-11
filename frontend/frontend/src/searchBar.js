@@ -58,7 +58,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
       team: player.strTeam,
       position: player.strPosition,
       picture: player.strCutout,
-      shirt_number: player.intShirtNumber, 
+      shirt_number: player.strNumber, 
       nationality: player.strNationality,
       birth_date: player.dateBorn, 
       height: player.strHeight,
