@@ -23,7 +23,7 @@ def get_db_connection():
 def init_db():
     """
     Initialize the database by creating tables if they don't exist.
-    Tables: Users, Players, UserPlayers, StartingEleven
+    Tables: Users, Players, UserPlayers, StartingEleven, Squads
     """
     with get_db_connection() as conn:
         cursor = conn.cursor()
@@ -68,6 +68,17 @@ def init_db():
             PRIMARY KEY (user_id, position),
             FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
             FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
+        );
+        ''')
+
+        # Create Squads table
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Squads (
+            squad_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            squad_name TEXT NOT NULL,
+            player_ids TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
         );
         ''')
 
@@ -368,6 +379,71 @@ def remove_from_starting_eleven(username, position):
         return jsonify({"message": "Player removed from starting eleven"}), 200
     except Exception as e:
         return jsonify({"message": "Error removing player from starting eleven", "error": str(e)}), 500
+
+@app.route('/api/squads/<username>', methods=['GET'])
+def get_user_squads(username):
+    """
+    Retrieve the squads for a user based on their username.
+    """
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT squad_id, squad_name, player_ids FROM Squads WHERE user_id = ?', (user_id,))
+    squads = cursor.fetchall()
+    conn.close()
+
+    result = [{"squad_id": row["squad_id"], "squad_name": row["squad_name"], "player_ids": row["player_ids"].split(",")} for row in squads]
+    return jsonify(result), 200
+
+@app.route('/api/squads/<username>', methods=['POST'])
+def add_squad(username):
+    """
+    Add a new squad for the user.
+    """
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+
+    data = request.get_json()
+    squad_name = data.get('squad_name')
+    player_ids = data.get('player_ids')
+
+    if not squad_name or not player_ids or len(player_ids) != 11:
+        return jsonify({"message": "Squad name and exactly 11 player IDs are required"}), 400
+
+    try:
+        player_ids_str = ",".join(map(str, player_ids))
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Squads (user_id, squad_name, player_ids) VALUES (?, ?, ?)', (user_id, squad_name, player_ids_str))
+        conn.commit()
+        squad_id = cursor.lastrowid
+        conn.close()
+        return jsonify({"message": "Squad added successfully", "squad_id": squad_id}), 200
+    except Exception as e:
+        return jsonify({"message": "Error adding squad", "error": str(e)}), 500
+
+@app.route('/api/squads/<username>/<int:squad_id>', methods=['DELETE'])
+def remove_squad(username, squad_id):
+    """
+    Remove a squad for the user.
+    """
+    user_id = get_user_id(username)
+    if user_id is None:
+        return jsonify({"message": "User not found"}), 404
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM Squads WHERE user_id = ? AND squad_id = ?', (user_id, squad_id))
+        conn.commit()
+        conn.close()
+        return jsonify({"message": "Squad removed successfully"}), 200
+    except Exception as e:
+        return jsonify({"message": "Error removing squad", "error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
