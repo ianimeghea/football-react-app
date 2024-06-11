@@ -13,6 +13,7 @@ import "./Home.css"; // Importing styles for the Home component
 import Login from './Login';
 import { useState } from 'react';
 import PlayerDetails from './playerDetails';
+import LatestNews from './LatestNews';
 
 /**
  * Main component for the application.
@@ -44,6 +45,10 @@ function App() {
           <Route path="/startingeleven" element={
             <StartingEleven user={user} setStartingEleven={setStartingEleven}/>
             } />
+          <Route path="/latestnews" element={
+            <LatestNews user={user} />
+            } />
+          
 
           {/* Route for the login page */}
           <Route path="/login" element={

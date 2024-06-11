@@ -246,6 +246,18 @@ def add_favorite_player(username):
     except Exception as e:
         logging.error(f"Error adding player to favorites: {e}")
         return jsonify({"message": "Error adding player to favorites", "error": str(e)}), 500
+    
+
+@app.route('/api/news')
+def get_latest_news():
+    try:
+        response = requests.get('https://footballnewsapi.netlify.app/.netlify/functions/api/news/espn')
+        if not response.ok:
+            raise Exception('Failed to fetch news')
+        data = response.json()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/users/<username>/favorite_players', methods=['DELETE'])
 def remove_favorite_player(username):
