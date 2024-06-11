@@ -10,6 +10,7 @@ const PlayerDetails = ({ player }) => {
   const fromFavourites = location.state?.from === 'favourites';
   const dateOfBirth = new Date(player.dateBorn);
   const playerAge = differenceInYears(new Date(), dateOfBirth);
+  const playerAge2 = differenceInYears(new Date(), player.birth_date);
   
   
   if (!player) {
@@ -30,9 +31,17 @@ const PlayerDetails = ({ player }) => {
       {player.picture && <img src={player.picture} alt={player.name} />}
       <p><strong>Team:</strong> {player.team !== "0" ? player.team : 'Information not available'}</p>
       <p><strong>Position:</strong> {player.position !== "0" ? player.position : 'Information not available'}</p>
+      <p><strong>Age:</strong> {playerAge2}</p>
+      <p><strong>Nationality:</strong> {player.nationality !== "0" ? player.nationality : 'Information not available'}</p>
+      <p><strong>Birth Date:</strong> {player.birth_date !== "0" ? player.birth_date : 'Information not available'}</p>
+      <p><strong>Height:</strong> {player.height !== "0" ? player.height : 'Information not available'}</p>
+      <p><strong>Weight:</strong> {player.weight !== "0" ? player.weight : 'Information not available'}</p>
+      <p><strong>Description:</strong> {player.description !== "0" ? player.description : 'Information not available'}</p>
       
+
     </div>
-  </div>) :
+  </div>
+  ) :
     (<div className="player-details">
     <div className="player-card">
       <h1>{player.strPlayer}</h1>
