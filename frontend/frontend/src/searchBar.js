@@ -38,6 +38,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
         const data = await response.json();
         const footballPlayers = data.player.filter(player => player.strSport === 'Soccer');
         setResults(footballPlayers);
+        console.log('Search results:', footballPlayers);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -54,7 +55,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
       name: player.strPlayer,
       team: player.strTeam,
       position: player.strPosition,
-      picture: player.strThumb
+      picture: player.strCutout
     };
 
     if (favorites.some(fav => fav.player_id === player.idPlayer)) {
@@ -135,8 +136,8 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
               </div>
             </div>
             <div className="player-image">
-              {player.strThumb ? (
-                <img src={player.strThumb} width="100" alt={player.strPlayer} />
+              {player.strCutout ? (
+                <img src={player.strCutout} width="100" alt={player.strPlayer} />
               ) : (
                 <div>No image available</div>
               )}

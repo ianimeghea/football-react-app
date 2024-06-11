@@ -33,7 +33,7 @@ const PlayerDetails = ({ player }) => {
     (<div className="player-details">
     <div className="player-card">
       <h1>{player.strPlayer}</h1>
-      {player.strThumb && <img src={player.strThumb} alt={player.strPlayer} />}
+      {player.strRender && <img src={player.strRender} alt={player.strPlayer} />}
       <p><strong>Team:</strong> {player.strTeam !== "0" ? player.strTeam : 'Information not available'}</p>
       <p><strong>Position:</strong> {player.strPosition !== "0" ? player.strPosition : 'Information not available'}</p>
       <p><strong>Nationality:</strong> {player.strNationality !== "0" ? player.strNationality : 'Information not available'}</p>
