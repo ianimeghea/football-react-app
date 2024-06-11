@@ -4,6 +4,8 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import GroupsIcon from '@mui/icons-material/Groups';
 import SearchBar from './searchBar.js';
 import './Home.css';
+import Footer from './Footer';
+import "./Footer.css"
 
 const Home = ({ setSelectedPlayer,user, favorites, setFavorites }) =>  {
   
@@ -67,6 +69,7 @@ const Home = ({ setSelectedPlayer,user, favorites, setFavorites }) =>  {
 
     </div>
     </div>
+    <Footer /> {/* Footer component */}
     </>
     
     

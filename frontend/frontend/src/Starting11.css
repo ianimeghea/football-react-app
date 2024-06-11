@@ -106,6 +106,7 @@
   }
   
   /* Media query for mobile screens */
+  
   @media screen and (max-width: 600px) {
     .card2,
     .middle-midfielder,
@@ -140,6 +141,7 @@
       margin: 5px 0; /* Adjusted margin for player name on mobile screens */
     }
   }
+  
   @media screen and (max-width: 414px) {
     .card2,
     .middle-midfielder,
@@ -174,5 +176,4 @@
       margin: 5px 0; /* Adjusted margin for player name on mobile screens */
     }
   }
-  
   

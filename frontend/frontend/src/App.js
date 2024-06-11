@@ -60,6 +60,7 @@ function App() {
             <PlayerDetails player={selectedPlayer} setSelectedPlayer={setSelectedPlayer}/>
             } />
         </Routes>
+        
     </BrowserRouter>
     </>
   );

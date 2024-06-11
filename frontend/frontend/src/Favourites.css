@@ -8,7 +8,7 @@
   .card {
     background-color: var(--green4);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.6);
     padding: 20px;
     text-align: center;
     max-height: 500px;
