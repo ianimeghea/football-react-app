@@ -18,7 +18,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
- 
+  
   /**
    * Handles the input change in the search bar.
    * @param {Object} event - The input change event.
@@ -50,12 +50,15 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
    * @param {Object} player - The player object.
    */
   const toggleFavorite = async (player) => {
+    
+ 
     const playerData = {
       player_id: player.idPlayer,
       name: player.strPlayer,
       team: player.strTeam,
       position: player.strPosition,
-      picture: player.strCutout
+      picture: player.strCutout,
+      
     };
 
     if (favorites.some(fav => fav.player_id === player.idPlayer)) {
