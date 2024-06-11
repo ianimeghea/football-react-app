@@ -28,6 +28,7 @@ const Starting11 = ({ user }) => {
           const formation = {};
           data.forEach(player => {
             formation[player.position] = player;
+            
           });
           setStartingEleven(formation);
         })
@@ -146,6 +147,7 @@ const Starting11 = ({ user }) => {
             <div className="card2">
               {startingEleven['goalkeeper'] ? (
                 <div className="display-card">
+                 
                   <img className="player-image" src={startingEleven['goalkeeper'].picture} alt={startingEleven['goalkeeper'].name} width="100" />
                   <p className="player-name1">{startingEleven['goalkeeper'].name}</p>
                   <p><strong>{positionAbbreviations["goalkeeper"]}</strong></p>
