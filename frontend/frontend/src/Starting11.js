@@ -8,9 +8,7 @@ import './Starting11.css';
 const Starting11 = ({ user }) => {
   const [startingEleven, setStartingEleven] = useState({});
   const navigate = useNavigate();
-  const handleDiscardAll = () => {
-    
-  }
+  
 /**
    * Fetches the user's starting eleven from the server.
    */
