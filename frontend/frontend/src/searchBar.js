@@ -50,6 +50,10 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
    * @param {Object} player - The player object.
    */
   const toggleFavorite = async (player) => {
+    if (!user) {
+      alert("Please log in to favorite players");
+      return;
+    }
     
  
     const playerData = {

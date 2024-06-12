@@ -10,7 +10,7 @@ const Navbar = ({ user, setUser }) => {
   
   return (
     <nav className="navbar">
-      <h1 className="logo">Football Gladiator</h1>
+      <h1 className="logo">Football Gladiators</h1>
       <ul>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/favourites">Favourites</Link></li>

@@ -24,7 +24,7 @@
   }
   
   .card-content h3 {
-    margin: 0;
+    margin: 5px;
     font-size: 1.5rem;
   }
   
@@ -76,7 +76,7 @@
   
   .add-to-team:hover {
     color: white;
-    border: 1px solid var(--green3);
+   
   }
   
   .add-to-team:hover:before {

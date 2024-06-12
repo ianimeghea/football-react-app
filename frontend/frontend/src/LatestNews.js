@@ -32,7 +32,18 @@ const LatestNews = ({ user }) => {
       <h2 className="lineup-title">Latest News</h2>
       <h3 className="lineup-title">{user ? `Handpicked for ${user.username}` : ''}</h3>
       {loading ? (
-        <p>Loading...</p>
+        <div className="news-grid">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className="skeleton-card">
+              <div className="skeleton-img"></div>
+              <div className="skeleton-content">
+                <div className="skeleton-text"></div>
+                <div className="skeleton-text short"></div>
+                <div className="skeleton-text"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <>
           <div className="news-grid">

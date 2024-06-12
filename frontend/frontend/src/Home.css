@@ -16,12 +16,12 @@
     height: 50%;
 }
 .card1 {
-    border: 1px solid #ccc;
+    
     border-radius: 8px;
     padding: 16px;
     max-width: 380px;
     margin: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
     background-color: var(--green4);
   }
   
