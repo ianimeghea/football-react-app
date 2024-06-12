@@ -1,6 +1,7 @@
 # Project Title
 // IMAGE OF THE REAL FRONTEND
 ## Brief description of the project
+Football Gladiators is a web-app designed to facilitate the communication between die-hard football fans. Passionates of the sport can easily create their best starting eleven of all time using our search tool and our database, and so are able to show their friends who they think were the best 11 footballers of all time.
 ## Frontend mockup
 ## Team members
 Iani Meghea, Luca Eftimie, Alex Stroescu, Vlad Obreja
@@ -65,4 +66,16 @@ With these instructions, the React server will start on localhost:3000 and the b
 
 
 ## Architecture
-    - High level structure of the repo
+    Group-6-/
+├── backend/
+│   ├── app.py
+│   ├── setup.py
+│   ├── database.db
+│   ├── .gitignore
+├── frontend/
+	├── frontend/
+│   		├── public/
+│   		├── src/
+│   		├── package.json
+│   		├── .gitignore
+ ├── requirements.txt
