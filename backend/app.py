@@ -211,7 +211,7 @@ def add_favorite_player(username):
     name = data.get('name')
     team = data.get('team')
     position = data.get('position')
-    picture = data.get('picture', None)
+    picture = data.get('picture',None)
     shirt_number = data.get('shirt_number')
     nationality = data.get('nationality')
     birth_date = data.get('birth_date')

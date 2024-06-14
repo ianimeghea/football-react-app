@@ -28,7 +28,7 @@ const Login = ({ setUser }) => {
   const handleAuth = async () => {
     if (username && password) {
       try {
-        const url = isLogin ? 'https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/login' : 'https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/register';
+        const url = isLogin ? 'http://127.0.0.1:5000/api/login' : 'http://127.0.0.1:5000/api/register';
         const response = await axios.post(url, { username, password });
 
         if (response.status === 200) {
@@ -59,7 +59,7 @@ const Login = ({ setUser }) => {
    */
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/users');
+      const response = await axios.get('http://127.0.0.1:5000/api/users');
       if (response.status === 200) {
         setUsers(response.data);
       }

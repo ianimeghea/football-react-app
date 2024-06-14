@@ -34,7 +34,7 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven }) => {
   const handleAddToTeam = (player_id) => {
     if (fromStarting11 && position) {
       // First, fetch the current starting eleven to check if the player is already on the team
-      fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/startingeleven/${user.username}`)
+      fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}`)
         .then(response => response.json())
         .then(startingEleven => {
           // Check if the player is already in the starting eleven
@@ -44,7 +44,7 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven }) => {
             alert('Player already in team');
           } else {
             // If the player is not in the list, proceed to add them
-            fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/startingeleven/${user.username}`, {
+            fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
