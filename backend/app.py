@@ -11,6 +11,12 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 CORS(app)
 
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+
 def get_db_connection():
     """
     Establish a connection to the SQLite database.
