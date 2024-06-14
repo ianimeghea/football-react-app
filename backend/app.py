@@ -205,7 +205,7 @@ def add_favorite_player(username):
     name = data.get('name')
     team = data.get('team')
     position = data.get('position')
-    picture = data.get('picture')
+    picture = data.get('picture', None)
     shirt_number = data.get('shirt_number')
     nationality = data.get('nationality')
     birth_date = data.get('birth_date')
@@ -213,8 +213,8 @@ def add_favorite_player(username):
     weight = data.get('weight')
     description = data.get('description')
 
-    if not player_id or not name or not team or not position or not picture:
-        return jsonify({"message": "Player ID, name, team, position, and picture are required"}), 400
+    if not player_id or not name or not team or not position:
+        return jsonify({"message": "Player ID, name, team, and position are required"}), 400
 
     try:
         conn = get_db_connection()
