@@ -67,7 +67,7 @@ const Statistics = () => {
     return (
         <div className="statistics-container">
             {player.picture && <img className="player-picture" src={player.picture} alt={player.name} />}
-            <h1 className="player-name">Statistics for {player.name} (all-time)</h1>
+            <h1 className="player-name1">Statistics for {player.name} (all-time)</h1>
             <div className="player-stats">
                 <p><strong>Position:</strong> {response.position}</p>
 

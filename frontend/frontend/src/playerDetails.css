@@ -12,6 +12,7 @@
   .player-details p {
     font-size: 1.2rem;
     line-height: 1.5;
+    margin: 50px;
   }
   .player-name{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
