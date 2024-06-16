@@ -19,6 +19,11 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven }) => {
     navigate(`/player/${player.name}`, { state: { from: 'favourites' } });
   };
 
+  // Function to handle navigation to statistics page
+  const handleViewStatistics = (player) => {
+    navigate(`/statistics`, { state: { player } });
+  };
+
   // Fetch favorites data on component mount
   useEffect(() => {
     if (user) {
@@ -108,6 +113,8 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven }) => {
               {fromStarting11 && <button className="add-to-team" onClick={() => handleAddToTeam(player.player_id)}>Add to team</button>}
               {/* Button to view more details */}
               <button className="more-details" onClick={() => handleMoreDetails(player)}>More details</button>
+              {/* Button to view statistics */}
+              <button className="more-details" onClick={() => handleViewStatistics(player)}>Statistics</button>
             </div>
           </div>
         ))}

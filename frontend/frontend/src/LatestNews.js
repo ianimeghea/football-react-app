@@ -25,7 +25,7 @@ const LatestNews = ({ user }) => {
   }, []);
 
   // Slice the news array to show only the first 6 articles
-  const newsToShow = news.slice(0, 6);
+  const newsToShow = news.slice(0, 12);
 
   return (
     <div className="latest-news-container">
@@ -33,7 +33,7 @@ const LatestNews = ({ user }) => {
       <h3 className="lineup-title">{user ? `Handpicked for ${user.username}` : ''}</h3>
       {loading ? (
         <div className="news-grid">
-          {Array.from({ length: 6 }).map((_, index) => (
+          {Array.from({ length: 12 }).map((_, index) => (
             <div key={index} className="skeleton-card">
               <div className="skeleton-img"></div>
               <div className="skeleton-content">

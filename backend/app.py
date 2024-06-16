@@ -3,6 +3,10 @@ from flask_cors import CORS
 import sqlite3
 import requests
 import logging
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
 
 # Set up logging configuration
 logging.basicConfig(level=logging.DEBUG)
@@ -10,6 +14,46 @@ logging.basicConfig(level=logging.DEBUG)
 # Initialize Flask application
 app = Flask(__name__)
 CORS(app)
+
+load_dotenv()
+
+openai_api_key = os.getenv('REACT_APP_OPENAI_API_KEY')
+
+
+openai = OpenAI(api_key=openai_api_key)
+
+@app.route('/api/statistics', methods=['GET'])
+def get_player_statistics():
+    """
+    Fetch player statistics using OpenAI's GPT-3.5.
+    """
+    player_name = request.args.get('playerName')
+
+    if not player_name:
+        return jsonify({"message": "Player name is required"}), 400
+
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Give me the all time career statistics for {player_name}. Please provide the following based on the player's position:\n"
+                       "For forwards: Goals, Assists, Shots per game.\n"
+                       "For midfielders: Goals, Assists, Passes per game.\n"
+                       "For defenders: Tackles per game, Interceptions per game, Clearances per game.\n"
+                       "For goalkeepers: Saves per game, Clean sheets, Goals conceded per game.\n"
+                       "Return the data in JSON format with keys: player, position, and the relevant statistics.Make sure that all the keys are the same, every time you generate them, with underscored lowercase letters."
+        },
+                
+            ],
+            max_tokens=200
+        )
+
+        return jsonify({"response": response.choices[0].message.content}), 200
+
+    except Exception as e:
+        return jsonify({"message": "Error processing request", "error": str(e)}), 500
 
 
 @app.route('/')
