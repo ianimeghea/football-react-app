@@ -13,6 +13,7 @@ def init_db():
     with get_db_connection() as conn:
         cursor = conn.cursor()
         
+        # Create Users table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS Users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,22 +22,60 @@ def init_db():
         );
         ''')
 
+        # Create Players table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS Players (
             player_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             team TEXT NOT NULL,
             position TEXT NOT NULL,
-            picture TEXT  -- New column for storing picture URL
+            picture TEXT,
+            shirt_number INTEGER,
+            nationality TEXT,
+            birth_date TEXT,
+            height TEXT,
+            weight TEXT,
+            description TEXT
         );
         ''')
 
+        # Create UserPlayers table
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS UserPlayers (
             user_id INTEGER,
             player_id INTEGER,
             PRIMARY KEY (user_id, player_id),
             FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
+        );
+        ''')
+
+        # Create StartingEleven table
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS StartingEleven (
+            user_id INTEGER,
+            position TEXT,
+            player_id INTEGER,
+            PRIMARY KEY (user_id, position),
+            FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
+        );
+        ''')
+        
+        # Create Statistics table
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Statistics (
+            player_id INTEGER PRIMARY KEY,
+            goals INTEGER DEFAULT 0,
+            assists INTEGER DEFAULT 0,
+            shots_per_game REAL DEFAULT 0,
+            passes_per_game REAL DEFAULT 0,
+            tackles_per_game REAL DEFAULT 0,
+            interceptions_per_game REAL DEFAULT 0,
+            clearances_per_game REAL DEFAULT 0,
+            saves_per_game REAL DEFAULT 0,
+            clean_sheets INTEGER DEFAULT 0,
+            goals_conceded_per_game REAL DEFAULT 0,
             FOREIGN KEY (player_id) REFERENCES Players(player_id) ON DELETE CASCADE
         );
         ''')

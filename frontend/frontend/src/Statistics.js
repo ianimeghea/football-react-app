@@ -25,12 +25,52 @@ const Statistics = () => {
                     console.log('Fetched data:', parsedData);
 
                     setResponse(parsedData);
+                    await storeStatistics(parsedData); // Store statistics in the backend
                     setHasFetched(true);
                 } catch (err) {
                     setError(err.message);
                 } finally {
                     setLoading(false);
                 }
+            }
+        };
+
+        const storeStatistics = async (stats) => {
+            try {
+                console.log('Storing statistics for player ID:', player.player_id);
+                const statisticsData = {
+                    goals: stats.goals || null,
+                    assists: stats.assists || null,
+                    shots_per_game: stats.shots_per_game || null,
+                    passes_per_game: stats.passes_per_game || null,
+                    tackles_per_game: stats.tackles_per_game || null,
+                    interceptions_per_game: stats.interceptions_per_game || null,
+                    clearances_per_game: stats.clearances_per_game || null,
+                    saves_per_game: stats.saves_per_game || null,
+                    clean_sheets: stats.clean_sheets || null,
+                    goals_conceded_per_game: stats.goals_conceded_per_game || null
+                };
+                console.log('Statistics being stored:', statisticsData);
+
+                const res = await fetch(`http://127.0.0.1:5000/api/statistics/${player.player_id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(statisticsData)
+                });
+
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    console.error('Backend error:', errorData);
+                    throw new Error('Failed to store statistics');
+                }
+
+                const result = await res.json();
+                console.log('Stored data:', result);
+            } catch (err) {
+                console.error('Error storing statistics:', err);
+                setError(err.message);
             }
         };
 
