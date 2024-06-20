@@ -1,3 +1,4 @@
+import OpenAI from "openai";
 
 /**
  * Retrieves the favorite players of a user.
@@ -44,3 +45,28 @@ export async function removeFromFavorites(username, player_id) {
     throw new Error(`Error removing player from favorites: ${error.message}`);
   }
 }
+
+const api_key = process.env.OPENAI_API_KEY;
+const openai = new OpenAI({
+    apiKey: api_key,
+    dangerouslyAllowBrowser: true
+});
+
+export const getResponse = async (playerName) => {
+    console.log("getResponse called");
+    const response = await openai.chat.completions.create({
+        messages: [
+            {
+                role: "user",
+                content: `How many goals did {playerName} score in the last season?`,
+            },
+        ],
+        model: "gpt-3.5-turbo",
+        max_tokens: 150,
+    });
+
+    return response.choices[0].message.content;
+
+};
+
+export default getResponse;

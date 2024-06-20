@@ -11,6 +11,10 @@ const Home = ({ setSelectedPlayer,user, favorites, setFavorites }) =>  {
   
   return (
     <>
+     <div className = "searchBar"> 
+      <SearchBar user={user} favorites={favorites} setFavorites={setFavorites} setSelectedPlayer={setSelectedPlayer}/>
+
+    </div>
     <div className = "container">
     <div className = "main">
       <div className = "row">
@@ -24,14 +28,14 @@ const Home = ({ setSelectedPlayer,user, favorites, setFavorites }) =>  {
       
         </div>
         <div className = "icon1">
-          <SportsSoccerIcon style={{fontSize : 130}} />
+          <SportsSoccerIcon style={{fontSize : 150}} />
 
         </div>
         
       </div>
       <div className = "row">
         <div className = "icon">
-          <StarIcon style={{fontSize : 130}} />
+          <StarIcon style={{fontSize : 150}} />
 
         </div>
         <div className="card1">
@@ -56,7 +60,7 @@ const Home = ({ setSelectedPlayer,user, favorites, setFavorites }) =>  {
       
         </div>
         <div className = "icon1">
-          <GroupsIcon style={{fontSize : 130}} />
+          <GroupsIcon style={{fontSize : 150}} />
 
         </div>
       
@@ -64,10 +68,7 @@ const Home = ({ setSelectedPlayer,user, favorites, setFavorites }) =>  {
       
     </div>
     
-    <div className = "searchBar"> 
-      <SearchBar user={user} favorites={favorites} setFavorites={setFavorites} setSelectedPlayer={setSelectedPlayer}/>
-
-    </div>
+   
     </div>
     <Footer /> {/* Footer component */}
     </>
