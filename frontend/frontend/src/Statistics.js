@@ -16,7 +16,7 @@ const Statistics = () => {
             if (player && !hasFetched) {
                 try {
                     console.log('Fetching statistics for:', player.name);
-                    const res = await fetch(`http://127.0.0.1:5000/api/statistics?playerName=${player.name}`);
+                    const res = await fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/statistics?playerName=${player.name}`);
                     if (!res.ok) {
                         throw new Error('Failed to fetch statistics');
                     }
@@ -52,7 +52,7 @@ const Statistics = () => {
                 };
                 console.log('Statistics being stored:', statisticsData);
 
-                const res = await fetch(`http://127.0.0.1:5000/api/statistics/${player.player_id}`, {
+                const res = await fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/statistics/${player.player_id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

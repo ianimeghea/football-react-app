@@ -15,7 +15,7 @@ const Starting11 = ({ user }) => {
   useEffect(() => {
     if (user) {
       console.log('Fetching starting eleven for user:', user.username);
-      fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}`)
+      fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/startingeleven/${user.username}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -47,7 +47,7 @@ const Starting11 = ({ user }) => {
    * @param {string} position - The position of the player to remove.
    */
   const handleRemovePlayer = (position) => {
-    fetch(`http://127.0.0.1:5000/api/startingeleven/${user.username}/${position}`, {
+    fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/startingeleven/${user.username}/${position}`, {
       method: 'DELETE'
     })
     .then(response => {

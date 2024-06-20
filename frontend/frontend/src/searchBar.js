@@ -72,7 +72,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
     if (favorites.some(fav => fav.player_id === player.idPlayer)) {
       setFavorites(prevFavorites => prevFavorites.filter(fav => fav.player_id !== player.idPlayer));
       try {
-        const response = await fetch(`http://127.0.0.1:5000/api/users/${user.username}/favorite_players`, {
+        const response = await fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/users/${user.username}/favorite_players`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const SearchBar = ({ user, setSelectedPlayer, favorites, setFavorites }) => {
       console.log('Username used in request:', user);
       setFavorites(prevFavorites => [...prevFavorites, playerData]);
       try {
-        const response = await fetch(`http://127.0.0.1:5000/api/users/${user.username}/favorite_players`, {
+        const response = await fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com/api/users/${user.username}/favorite_players`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

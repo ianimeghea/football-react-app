@@ -8,7 +8,7 @@ import OpenAI from "openai";
  */
 export const getUserFavorites = async (username) => {
   try {
-    const response = await fetch(`http://127.0.0.1:5000/api/users/${username}/players`);
+    const response = await fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com//api/users/${username}/players`);
     const data = await response.json();
     if (response.ok) {
       return data;
@@ -29,7 +29,7 @@ export const getUserFavorites = async (username) => {
  */
 export async function removeFromFavorites(username, player_id) {
   try {
-    const response = await fetch(`http://127.0.0.1:5000/api/users/${username}/favorite_players`, {
+    const response = await fetch(`https://football-gladiators-project-4b40aafa12b3.herokuapp.com//api/users/${username}/favorite_players`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -52,21 +52,4 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
 });
 
-export const getResponse = async (playerName) => {
-    console.log("getResponse called");
-    const response = await openai.chat.completions.create({
-        messages: [
-            {
-                role: "user",
-                content: `How many goals did {playerName} score in the last season?`,
-            },
-        ],
-        model: "gpt-3.5-turbo",
-        max_tokens: 150,
-    });
 
-    return response.choices[0].message.content;
-
-};
-
-export default getResponse;
