@@ -14,7 +14,6 @@ import Login from './Login';
 import { useState } from 'react';
 import PlayerDetails from './playerDetails';
 import LatestNews from './LatestNews';
-import Statistics from './Statistics';
 
 /**
  * Main component for the application.
@@ -56,11 +55,7 @@ function App() {
             <Login setUser = {setUser} />
             } />
 
-          {/* Route for the statistics page */}
-          <Route path="/statistics" element={
-            <Statistics />
-            } />
-
+          
           
 
           {/* Route for any other paths */}
