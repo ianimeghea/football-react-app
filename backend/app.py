@@ -17,9 +17,6 @@ CORS(app)
 
 load_dotenv()
 
-openai_api_key = os.getenv('REACT_APP_OPENAI_API_KEY')
-openai = OpenAI(api_key=openai_api_key)
-
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
@@ -416,109 +413,5 @@ def remove_from_starting_eleven(username, position):
     except Exception as e:
         return jsonify({"message": "Error removing player from starting eleven", "error": str(e)}), 500
     
-@app.route('/api/statistics', methods=['GET'])
-def get_player_statistics():
-    """
-    Fetch player statistics using OpenAI's GPT-3.5.
-    """
-    player_name = request.args.get('playerName')
-
-    if not player_name:
-        return jsonify({"message": "Player name is required"}), 400
-
-    try:
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"Give me the all time career statistics for {player_name}. Please provide the following based on the player's position:\n"
-                       "For forwards: Goals, Assists, Shots per game.\n"
-                       "For midfielders: Goals, Assists, Passes per game.\n"
-                       "For defenders: Tackles per game, Interceptions per game, Clearances per game.\n"
-                       "For goalkeepers: Saves per game, Clean sheets, Goals conceded per game.\n"
-                       "Return the data in JSON format with keys: player, position, and the relevant statistics.Make sure that all the keys are the same, every time you generate them, with underscored lowercase letters."
-        },
-                
-            ],
-            max_tokens=200
-        )
-
-        return jsonify({"response": response.choices[0].message.content}), 200
-
-    except Exception as e:
-        return jsonify({"message": "Error processing request", "error": str(e)}), 500
-
-
-@app.route('/api/statistics/<int:player_id>', methods=['POST'])
-def store_player_statistics(player_id):
-    """
-    Store player statistics.
-    """
-    data = request.get_json()
-    goals = data.get('goals', None)
-    assists = data.get('assists', None)
-    shots_per_game = data.get('shots_per_game', None)
-    passes_per_game = data.get('passes_per_game', None)
-    tackles_per_game = data.get('tackles_per_game', None)
-    interceptions_per_game = data.get('interceptions_per_game', None)
-    clearances_per_game = data.get('clearances_per_game', None)
-    saves_per_game = data.get('saves_per_game', None)
-    clean_sheets = data.get('clean_sheets', None)
-    goals_conceded_per_game = data.get('goals_conceded_per_game', None)
-
-    try:
-        logging.debug(f"Received data for player_id {player_id}: {data}")
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT OR REPLACE INTO Statistics (
-                player_id, goals, assists, shots_per_game, passes_per_game, tackles_per_game,
-                interceptions_per_game, clearances_per_game, saves_per_game, clean_sheets, goals_conceded_per_game
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (
-            player_id, goals, assists, shots_per_game, passes_per_game, tackles_per_game,
-            interceptions_per_game, clearances_per_game, saves_per_game, clean_sheets, goals_conceded_per_game
-        ))
-        conn.commit()
-        conn.close()
-        return jsonify({"message": "Statistics stored successfully"}), 200
-    except Exception as e:
-        logging.error(f"Error storing statistics for player_id {player_id}: {e}")
-        return jsonify({"message": "Error storing statistics", "error": str(e)}), 500
-
-@app.route('/api/statistics/<int:player_id>', methods=['GET'])
-def fetch_player_statistics(player_id):
-    """
-    Get player statistics.
-    """
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Statistics WHERE player_id = ?', (player_id,))
-        statistics = cursor.fetchone()
-        conn.close()
-
-        if statistics:
-            return jsonify(dict(statistics)), 200
-        return jsonify({"message": "Statistics not found"}), 404
-    except Exception as e:
-        return jsonify({"message": "Error fetching statistics", "error": str(e)}), 500
-
-@app.route('/api/statistics/<int:player_id>', methods=['DELETE'])
-def delete_player_statistics(player_id):
-    """
-    Remove player statistics.
-    """
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('DELETE FROM Statistics WHERE player_id = ?', (player_id,))
-        conn.commit()
-        conn.close()
-        return jsonify({"message": "Statistics deleted successfully"}), 200
-    except Exception as e:
-        return jsonify({"message": "Error deleting statistics", "error": str(e)}), 500
-
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
