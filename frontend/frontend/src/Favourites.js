@@ -23,6 +23,7 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven }) => {
   const handleViewStatistics = (player) => {
     navigate(`/statistics`, { state: { player } });
   };
+  
 
   // Fetch favorites data on component mount
   useEffect(() => {
@@ -115,6 +116,7 @@ const Favourites = ({ user, setSelectedPlayer, startingEleven }) => {
               <button className="more-details" onClick={() => handleMoreDetails(player)}>More details</button>
               {/* Button to view statistics */}
               <button className="more-details" onClick={() => handleViewStatistics(player)}>Statistics</button>
+              
             </div>
           </div>
         ))}

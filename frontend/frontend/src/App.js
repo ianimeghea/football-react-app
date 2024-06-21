@@ -14,7 +14,8 @@ import Login from './Login';
 import { useState } from 'react';
 import PlayerDetails from './playerDetails';
 import LatestNews from './LatestNews';
-import Statistics from './Statistics.js';
+import Statistics from './Statistics';
+
 /**
  * Main component for the application.
  * Manages user state, selected player, and favorite players.
@@ -55,12 +56,12 @@ function App() {
             <Login setUser = {setUser} />
             } />
 
-
-
           {/* Route for the statistics page */}
           <Route path="/statistics" element={
             <Statistics />
             } />
+
+          
 
           {/* Route for any other paths */}
           <Route path = "*" element={

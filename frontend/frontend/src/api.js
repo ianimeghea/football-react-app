@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 
 /**
  * Retrieves the favorite players of a user.
@@ -46,10 +45,5 @@ export async function removeFromFavorites(username, player_id) {
   }
 }
 
-const api_key = process.env.OPENAI_API_KEY;
-const openai = new OpenAI({
-    apiKey: api_key,
-    dangerouslyAllowBrowser: true
-});
 
 
