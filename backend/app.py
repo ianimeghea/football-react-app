@@ -3,7 +3,6 @@ from flask_cors import CORS
 import sqlite3
 import requests
 import logging
-from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
